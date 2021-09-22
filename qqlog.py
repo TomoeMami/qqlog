@@ -27,6 +27,7 @@ class RequestHandler(BaseHTTPRequestHandler):
         data = self.rfile.read(int(self.headers['content-length']))
         data = unquote(str(data, encoding='utf-8'))
         json_obj = json.loads(data)
+        print(json_obj)
         msgchain = json_obj['messageChain']
         # sendername = json_obj['sender']['memberName'] +'('+str(json_obj['sender']['id'])[:2]+'****'+str(json_obj['sender']['id'])[-2:]+')'
         sendername = json_obj['sender']['memberName']
