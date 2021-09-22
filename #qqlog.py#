@@ -24,11 +24,11 @@ def mkdir(path):
 class RequestHandler(BaseHTTPRequestHandler):
     def do_POST(self):
         global dailydict
-        self.send_response(200)
         data = self.rfile.read(int(self.headers['content-length']))
         data = unquote(str(data, encoding='utf-8'))
         json_obj = json.loads(data)
         print(json_obj)
+        self.send_response(200)
         msgchain = json_obj['messageChain']
         # sendername = json_obj['sender']['memberName'] +'('+str(json_obj['sender']['id'])[:2]+'****'+str(json_obj['sender']['id'])[-2:]+')'
         sendername = json_obj['sender']['memberName']
@@ -71,6 +71,7 @@ class RequestHandler(BaseHTTPRequestHandler):
             with open ('./'+toyear+'/'+tomonth+'/'+today+'.md','a',encoding='utf-8') as f:
                 f.writelines(dailydict)
             dailydict.clear()
+        
 
 if __name__ == "__main__":
     global dailydict
