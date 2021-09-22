@@ -25,6 +25,7 @@ class RequestHandler(BaseHTTPRequestHandler):
     def do_POST(self):
         global dailydict
         self.send_response(200)
+        self.end_headers()
         data = self.rfile.read(int(self.headers['content-length']))
         data = unquote(str(data, encoding='utf-8'))
         json_obj = json.loads(data)
