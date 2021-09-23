@@ -19,7 +19,7 @@ if __name__ == '__main__':
             data = {
                 "eventId":event.event_id,
                 "fromId":event.from_id,
-                "groupId":event_group_id,
+                "groupId":event.group_id,
                 "operate":0,
                 "message":""
                 }
