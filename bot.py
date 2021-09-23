@@ -1,5 +1,5 @@
 from mirai import Mirai, WebSocketAdapter, FriendMessage
-from mirai import BotInvitedJoinGroupRequestEvent
+from mirai import RequestEvent
 if __name__ == '__main__':
     bot = Mirai(
         qq=3337523821, # 改成你的机器人的 QQ 号
@@ -12,7 +12,7 @@ if __name__ == '__main__':
     def on_friend_message(event: FriendMessage):
         if str(event.message_chain) == '你好':
             return bot.send(event, 'Hello, World!')
-    @bot.on(BotInvitedJoinGroupRequestEvent)
-    def on_group_invited(event: BotInvitedJoinGroupRequestEvent):
-        print(BotInvitedJoinGroupRequestEvent)
+    @bot.on(RequestEvent)
+    def on_group_invited(event: RequestEvent):
+        print(RequestEvent)
     bot.run()
