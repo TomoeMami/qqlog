@@ -96,7 +96,7 @@ class RequestHandler(BaseHTTPRequestHandler):
                         self.wfile.write(json.dumps(body).encode('utf-8'))
         elif json_obj['type'] == 'BotInvitedJoinGroupRequestEvent':
             print(json_obj)
-            if json_obj['fromId'] = '1747222904':
+            if json_obj['fromId'] == '1747222904':
                 self.send_response(200)
                 self.send_header("Content-type", "application/json")
                 self.end_headers()
