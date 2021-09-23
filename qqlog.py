@@ -94,6 +94,23 @@ class RequestHandler(BaseHTTPRequestHandler):
                                         { "type":"Image", "url":"https://i0.hdslb.com/bfs/album/67fc4e6b417d9c68ef98ba71d5e79505bbad97a1.png" }
                                     ]}}
                         self.wfile.write(json.dumps(body).encode('utf-8'))
+        elif json_obj['type'] == 'BotInvitedJoinGroupRequestEvent':
+            print(json_obj)
+            if json_obj['fromId'] = '1747222904':
+                self.send_response(200)
+                self.send_header("Content-type", "application/json")
+                self.end_headers()
+                body = {
+                        'command': "resp_memberJoinRequestEvent",  
+                        'content': {
+                            "sessionKey":"",
+                            "eventId":json_obj['eventId'],
+                            "fromId":json_obj['fromId'],
+                            "groupId":json_obj['groupId'],
+                            "operate":0,
+                            "message":""
+                            }}
+                self.wfile.write(json.dumps(body).encode('utf-8'))
         else:
             self.send_response(200)
             self.end_headers()
