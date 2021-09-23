@@ -1,5 +1,5 @@
 from mirai import Mirai, WebSocketAdapter, FriendMessage
-from mirai.models.events import BotInvitedJoinGroupRequestEvent,MemberJoinRequestEvent
+from mirai.models.events import BotInvitedJoinGroupRequestEvent,MemberJoinRequestEvent,MemberJoinEvent
 if __name__ == '__main__':
     bot = Mirai(
         qq=3337523821, # 改成你的机器人的 QQ 号
@@ -29,5 +29,8 @@ if __name__ == '__main__':
         # else:
         #     return bot.allow(event)
 
-
+    @bot.on(MemberJoinEvent)
+    def on_member_join(event: MemberJoinEvent):
+        return bot.send(event, "本群禁盒禁色禁涉政禁违法，所有群聊消息均存档，详情参见公告。")
+    
     bot.run()
