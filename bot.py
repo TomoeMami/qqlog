@@ -1,4 +1,4 @@
-from mirai import Mirai, WebSocketAdapter, FriendMessage,GroupMessage
+from mirai import Mirai, HTTPAdapter, FriendMessage,GroupMessage
 from mirai.models.events import BotInvitedJoinGroupRequestEvent,MemberJoinRequestEvent
 from mirai.models.message import deserialize
 def mkdir(path):
@@ -25,9 +25,7 @@ if __name__ == '__main__':
     dailydict = []
     bot = Mirai(
         qq=3337523821, # 改成你的机器人的 QQ 号
-        adapter=WebSocketAdapter(
-            verify_key='yirimirai', host='localhost', port=8080
-        )
+        adapter=HTTPAdapter(verify_key=None, host='localhost', port=8080, single_mode=True)
     )
 
     @bot.on(FriendMessage)
