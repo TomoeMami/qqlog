@@ -76,6 +76,7 @@ class RequestHandler(BaseHTTPRequestHandler):
         elif json_obj['type'] == 'FriendMessage':
             msgchain = json_obj['messageChain']
             senderid = json_obj['sender']['id']
+            print(json_obj)
             for i in msgchain:
                 if i['type'] == 'Plain':
                     if i['text'] == '你好':
