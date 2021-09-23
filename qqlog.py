@@ -24,55 +24,59 @@ def mkdir(path):
 class RequestHandler(BaseHTTPRequestHandler):
     def do_POST(self):
         global dailydict
-        self.send_response(200)
-        self.end_headers()
         data = self.rfile.read(int(self.headers['content-length']))
         data = unquote(str(data, encoding='utf-8'))
         json_obj = json.loads(data)
         print(json_obj)
-        msgchain = json_obj['messageChain']
-        # sendername = json_obj['sender']['memberName'] +'('+str(json_obj['sender']['id'])[:2]+'****'+str(json_obj['sender']['id'])[-2:]+')'
-        sendername = json_obj['sender']['memberName']
-        # print(json_obj)
-        char = '#### '
-        for i in msgchain:
-            if i['type'] == 'Source':
-                gettime = time.strftime("%H:%M:%S ", time.localtime(i['time']))
-                char = char + gettime +' '+sendername + '：\n\n'
-            elif i['type'] == 'Quote':
-                char = char + '<blockquote>'+ i['origin'][0]['text'] +'</blockquote>\n '
-            elif i['type'] == 'Plain':
-                char = char + i['text']
-            elif i['type'] == 'Image':
-                char = char + '<img src="'+i['url']+'" max_width="50%" />'
-            elif i['type'] == 'Face':
-                char = char + '[' + i['name'] + ']'
-            elif i['type'] == 'At':
-                # char = chat + '(@'+str(i['target'])[:2]+'****'+str(i['target'])[-2:]+') '
-                char = char + '(@了某人) '
-            elif i['type'] == 'Xml':
-                url = re.findall(r'url=\"(.+?)\"',i['xml'])[0]
-                title = re.findall(r'\<title\>(.+?)\</title\>',i['xml'])[0]
-                char = char + ' ['+title+']'+'('+url+')'
-            elif i['type'] == 'App':
-                dat = json.loads(i['content'])
-                url = dat['meta']['detail_1']['qqdocurl']
-                title = dat['meta']['detail_1']['desc']
-                char = char + ' ['+title+']'+'('+url+')'
-        char = char + '\n\n*****\n\n'
-        char = re.sub(r'\((\d{1})\d+(\d{1})\)','(\1****\2)',char)
-        print(char)
-        dailydict.append(char)
-        if len(dailydict) >= 10:
-            toyear = datetime.datetime.now().strftime('%Y')
-            tomonth = datetime.datetime.now().strftime('%Y-%m')
-            today = datetime.datetime.now().strftime('%Y-%m-%d')
-            mkdir('./'+toyear)
-            mkdir('./'+toyear+'/'+tomonth)
-            with open ('./'+toyear+'/'+tomonth+'/'+today+'.md','a',encoding='utf-8') as f:
-                f.writelines(dailydict)
-            dailydict.clear()
-
+        if json_obj['type'] == 'GroupMessage':
+            self.send_response(200)
+            self.end_headers()
+            msgchain = json_obj['messageChain']
+            # sendername = json_obj['sender']['memberName'] +'('+str(json_obj['sender']['id'])[:2]+'****'+str(json_obj['sender']['id'])[-2:]+')'
+            sendername = json_obj['sender']['memberName']
+            # print(json_obj)
+            char = '#### '
+            for i in msgchain:
+                if i['type'] == 'Source':
+                    gettime = time.strftime("%H:%M:%S ", time.localtime(i['time']))
+                    char = char + gettime +' '+sendername + '：\n\n'
+                elif i['type'] == 'Quote':
+                    char = char + '<blockquote>'+ i['origin'][0]['text'] +'</blockquote>\n '
+                elif i['type'] == 'Plain':
+                    char = char + i['text']
+                elif i['type'] == 'Image':
+                    char = char + '<img src="'+i['url']+'" max_width="50%" />'
+                elif i['type'] == 'Face':
+                    char = char + '[' + i['name'] + ']'
+                elif i['type'] == 'At':
+                    # char = chat + '(@'+str(i['target'])[:2]+'****'+str(i['target'])[-2:]+') '
+                    char = char + '(@了某人) '
+                elif i['type'] == 'Xml':
+                    url = re.findall(r'url=\"(.+?)\"',i['xml'])[0]
+                    title = re.findall(r'\<title\>(.+?)\</title\>',i['xml'])[0]
+                    char = char + ' ['+title+']'+'('+url+')'
+                elif i['type'] == 'App':
+                    dat = json.loads(i['content'])
+                    url = dat['meta']['detail_1']['qqdocurl']
+                    title = dat['meta']['detail_1']['desc']
+                    char = char + ' ['+title+']'+'('+url+')'
+            char = char + '\n\n*****\n\n'
+            char = re.sub(r'\((\d{1})\d+(\d{1})\)','(\1****\2)',char)
+            print(char)
+            dailydict.append(char)
+            if len(dailydict) >= 10:
+                toyear = datetime.datetime.now().strftime('%Y')
+                tomonth = datetime.datetime.now().strftime('%Y-%m')
+                today = datetime.datetime.now().strftime('%Y-%m-%d')
+                mkdir('./'+toyear)
+                mkdir('./'+toyear+'/'+tomonth)
+                with open ('./'+toyear+'/'+tomonth+'/'+today+'.md','a',encoding='utf-8') as f:
+                    f.writelines(dailydict)
+                dailydict.clear()
+        elif json_obj['type'] == 'BotInvitedJoinGroupRequestEvent':
+            self.send_response(200)
+            #self.send_header('Content-type', 'application/json')
+            self.end_headers()
 if __name__ == "__main__":
     global dailydict
     dailydict = []
