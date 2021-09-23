@@ -56,26 +56,26 @@ if __name__ == '__main__':
     def on_group_message(event: GroupMessage):
         char = '#### '
         for i in event.message_chain:
-            if i['type'] == 'Source':
-                gettime = time.strftime("%H:%M:%S ", time.localtime(i['time']))
+            if i.type == 'Source':
+                gettime = time.strftime("%H:%M:%S ", time.localtime(i.time))
                 char = char + gettime +' '+str(event.sender) + '：\n\n'
-            elif i['type'] == 'Quote':
-                char = char + '<blockquote>'+ i['origin'][0]['text'] +'</blockquote>\n '
-            elif i['type'] == 'Plain':
-                char = char + i['text']
-            elif i['type'] == 'Image':
-                char = char + '<img src="'+i['url']+'" max_width="50%" />'
-            elif i['type'] == 'Face':
-                char = char + '[' + i['name'] + ']'
-            elif i['type'] == 'At':
+            elif i.type == 'Quote':
+                char = char + '<blockquote>'+ i.origin.text +'</blockquote>\n '
+            elif i.type == 'Plain':
+                char = char + i.text
+            elif i.type == 'Image':
+                char = char + '<img src="'+i.url+'" max_width="50%" />'
+            elif i.type == 'Face':
+                char = char + '[' + i.name + ']'
+            elif i.type == 'At':
                 # char = chat + '(@'+str(i['target'])[:2]+'****'+str(i['target'])[-2:]+') '
                 char = char + '(@了某人) '
-            elif i['type'] == 'Xml':
-                url = re.findall(r'url=\"(.+?)\"',i['xml'])[0]
-                title = re.findall(r'\<title\>(.+?)\</title\>',i['xml'])[0]
+            elif i.type == 'Xml':
+                url = re.findall(r'url=\"(.+?)\"',i.xml)[0]
+                title = re.findall(r'\<title\>(.+?)\</title\>',i.xml)[0]
                 char = char + ' ['+title+']'+'('+url+')'
-            elif i['type'] == 'App':
-                dat = json.loads(i['content'])
+            elif i.type == 'App':
+                dat = json.loads(i.content)
                 url = dat['meta']['detail_1']['qqdocurl']
                 title = dat['meta']['detail_1']['desc']
                 char = char + ' ['+title+']'+'('+url+')'
@@ -100,25 +100,25 @@ if __name__ == '__main__':
         # # print(json_obj)
         # char = '#### '
         # for i in msgchain:
-        #     if i['type'] == 'Source':
+        #     if i.type == 'Source':
         #         gettime = time.strftime("%H:%M:%S ", time.localtime(i['time']))
         #         char = char + gettime +' '+sendername + '：\n\n'
-        #     elif i['type'] == 'Quote':
+        #     elif i.type == 'Quote':
         #         char = char + '<blockquote>'+ i['origin'][0]['text'] +'</blockquote>\n '
-        #     elif i['type'] == 'Plain':
+        #     elif i.type == 'Plain':
         #         char = char + i['text']
-        #     elif i['type'] == 'Image':
+        #     elif i.type == 'Image':
         #         char = char + '<img src="'+i['url']+'" max_width="50%" />'
-        #     elif i['type'] == 'Face':
+        #     elif i.type == 'Face':
         #         char = char + '[' + i['name'] + ']'
-        #     elif i['type'] == 'At':
+        #     elif i.type == 'At':
         #         # char = chat + '(@'+str(i['target'])[:2]+'****'+str(i['target'])[-2:]+') '
         #         char = char + '(@了某人) '
-        #     elif i['type'] == 'Xml':
+        #     elif i.type == 'Xml':
         #         url = re.findall(r'url=\"(.+?)\"',i['xml'])[0]
         #         title = re.findall(r'\<title\>(.+?)\</title\>',i['xml'])[0]
         #         char = char + ' ['+title+']'+'('+url+')'
-        #     elif i['type'] == 'App':
+        #     elif i.type == 'App':
         #         dat = json.loads(i['content'])
         #         url = dat['meta']['detail_1']['qqdocurl']
         #         title = dat['meta']['detail_1']['desc']
