@@ -31,6 +31,6 @@ if __name__ == '__main__':
 
     @bot.on(MemberJoinEvent)
     def on_member_join(event: MemberJoinEvent):
-        return bot.send(event, "本群禁盒禁色禁涉政禁违法，所有群聊消息均存档，详情参见公告。")
+        return bot.send_group_message(event, "本群禁盒禁色禁涉政禁违法，所有群聊消息均存档，详情参见公告。")
     
     bot.run()
