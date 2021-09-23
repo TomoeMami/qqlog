@@ -74,8 +74,8 @@ class RequestHandler(BaseHTTPRequestHandler):
                     f.writelines(dailydict)
                 dailydict.clear()
         elif json_obj['type'] == 'BotInvitedJoinGroupRequestEvent':
-            self.send_response(200)
             if json_obj['fromId'] == '1747222904':
+                self.send_response(200)
                 self.send_header('Content-type', 'application/json')
                 self.end_headers()
                 data = {
@@ -88,6 +88,7 @@ class RequestHandler(BaseHTTPRequestHandler):
                 }
                 self.wfile.write(json.dumps(data).encode('utf-8'))
             else:
+                self.send_response(200)
                 self.end_headers()
 if __name__ == "__main__":
     global dailydict
