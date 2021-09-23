@@ -1,6 +1,6 @@
 from mirai import Mirai, WebSocketAdapter, FriendMessage,GroupMessage
-from mirai.models.events import BotInvitedJoinGroupRequestEvent,MemberJoinRequestEvent,MemberJoinEvent
-
+from mirai.models.events import BotInvitedJoinGroupRequestEvent,MemberJoinRequestEvent
+from mirai.models.message import deserialize
 def mkdir(path):
     # 去除首位空格
     path=path.strip()
@@ -53,7 +53,7 @@ if __name__ == '__main__':
     
     @bot.on(GroupMessage)
     def on_group_message(event: GroupMessage):
-        msgchain = str(event.message_chain)
+        msgchain = deserialize(str(event.message_chain))
         print(msgchain)
         # sendername = json_obj['sender']['memberName'] +'('+str(json_obj['sender']['id'])[:2]+'****'+str(json_obj['sender']['id'])[-2:]+')'
         # sendername = json_obj['sender']['memberName']
