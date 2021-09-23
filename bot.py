@@ -1,23 +1,16 @@
-import json,time,re,datetime,os
-from urllib.parse import unquote
-from http.server import HTTPServer, BaseHTTPRequestHandler
+from mirai import Mirai, WebSocketAdapter, FriendMessage
 
-class RequestHandler(BaseHTTPRequestHandler):
-    def handler(self):
-        print("data:", self.rfile.readline().decode())
-        self.wfile.write(self.rfile.readline())
+if __name__ == '__main__':
+    bot = Mirai(
+        qq=3337523821, # 改成你的机器人的 QQ 号
+        adapter=WebSocketAdapter(
+            verify_key='yirimirai', host='localhost', port=8080
+        )
+    )
 
-    def do_POST(self):
-        print(self.headers)
-        print(self.command)
-        data = self.rfile.read(int(self.headers['content-length']))
-        # data = unquote(str(data, encoding='utf-8'))
-        # json_obj = json.loads(data)
-        json_obj = data.decode()
-        print(json_obj)
-        self.send_response(200)
-        self.end_headers()
-if __name__ == "__main__":
-    addr = ('', 1314)
-    server = HTTPServer(addr, RequestHandler)
-    server.serve_forever()
+    @bot.on(FriendMessage)
+    def on_friend_message(event: FriendMessage):
+        if str(event.message_chain) == '你好':
+            return bot.send(event, 'Hello, World!')
+
+    bot.run()
