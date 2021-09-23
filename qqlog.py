@@ -73,23 +73,9 @@ class RequestHandler(BaseHTTPRequestHandler):
                 with open ('./'+toyear+'/'+tomonth+'/'+today+'.md','a',encoding='utf-8') as f:
                     f.writelines(dailydict)
                 dailydict.clear()
-        elif json_obj['type'] == 'BotInvitedJoinGroupRequestEvent':
-            if json_obj['fromId'] == '1747222904':
-                self.send_response(200)
-                self.send_header('Content-type', 'application/json')
-                self.end_headers()
-                data = {
-                "sessionKey":"",
-                "eventId":json_obj['eventId'],
-                "fromId":json_obj['fromId'],
-                "groupId":json_obj['groupId'],
-                "operate":0,
-                "message":""
-                }
-                self.wfile.write(json.dumps(data).encode('utf-8'))
-            else:
-                self.send_response(200)
-                self.end_headers()
+        else:
+            self.send_response(200)
+            self.end_headers()
 if __name__ == "__main__":
     global dailydict
     dailydict = []
