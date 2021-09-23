@@ -73,6 +73,25 @@ class RequestHandler(BaseHTTPRequestHandler):
                 with open ('./'+toyear+'/'+tomonth+'/'+today+'.md','a',encoding='utf-8') as f:
                     f.writelines(dailydict)
                 dailydict.clear()
+        elif json_obj['type'] == 'FriendMessage':
+            msgchain = json_obj['messageChain']
+            senderid = json_obj['sender']['id']
+            for i in msgchain:
+                if i['type'] == 'Plain':
+                    if i['text'] == '你好':
+                        self.send_response(200)
+                        self.send_header("Content-type", "application/json")
+                        self.end_headers()
+                        body = {
+                                'command': "sendFriendMessage",  
+                                'content': {
+                                    "sessionKey":"",
+                                    "target":senderid,
+                                    "messageChain":[
+                                        { "type":"Plain", "text":"hello\n" },
+                                        { "type":"Plain", "text":"world" },
+                                        { "type":"Image", "url":"https://i0.hdslb.com/bfs/album/67fc4e6b417d9c68ef98ba71d5e79505bbad97a1.png" }
+                                    ]}}
         else:
             self.send_response(200)
             self.end_headers()
