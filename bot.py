@@ -16,5 +16,12 @@ if __name__ == '__main__':
     @bot.on(BotInvitedJoinGroupRequestEvent)
     def on_group_invited(event: BotInvitedJoinGroupRequestEvent):
         if str(event.from_id) == '1747222904':
-            return RespBotInvitedJoinGroupRequestEvent(event,'0')
+            data = {
+                "eventId":event.event_id,
+                "fromId":event.from_id,
+                "groupId":event_group_id,
+                "operate":0,
+                "message":""
+                }
+            return RespBotInvitedJoinGroupRequestEvent(event,data)
     bot.run()
