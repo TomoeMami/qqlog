@@ -45,7 +45,7 @@ class RequestHandler(BaseHTTPRequestHandler):
                 elif i['type'] == 'Plain':
                     char = char + i['text']
                 elif i['type'] == 'Image':
-                    char = char + '<img src="'+i['url']+'" max_width="50%" />'
+                    char = char + '<img src="'+i['url']+'" />'
                 elif i['type'] == 'Face':
                     char = char + '[' + i['name'] + ']'
                 elif i['type'] == 'At':
