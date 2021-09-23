@@ -92,6 +92,7 @@ class RequestHandler(BaseHTTPRequestHandler):
                                         { "type":"Plain", "text":"world" },
                                         { "type":"Image", "url":"https://i0.hdslb.com/bfs/album/67fc4e6b417d9c68ef98ba71d5e79505bbad97a1.png" }
                                     ]}}
+                        self.wfile.write(json.dumps(body).encode('utf-8'))
         else:
             self.send_response(200)
             self.end_headers()
