@@ -1,5 +1,5 @@
 from mirai import Mirai, WebSocketAdapter, FriendMessage
-from mirai import RequestEvent
+from mirai import Event
 if __name__ == '__main__':
     bot = Mirai(
         qq=3337523821, # 改成你的机器人的 QQ 号
