@@ -7,11 +7,11 @@ if __name__ == '__main__':
         )
     )
 
-    @bot.on(mi.FriendMessage)
-    def on_friend_message(event: mi.FriendMessage):
+    @bot.on(mi.Event.MessageEvent.FriendMessage)
+    def on_friend_message(event: mi.Event.MessageEvent.FriendMessage):
         if str(event.message_chain) == '你好':
             return bot.send(event, 'Hello, World!')
-    @bot.on(mi.RequestEvent.BotInvitedJoinGroupRequestEvent)
+    @bot.on(mi.Event.RequestEvent.BotInvitedJoinGroupRequestEvent)
     def on_group_invited(event: mi.RequestEvent.BotInvitedJoinGroupRequestEvent):
         if str(event.from_id) == '1747222904':
             print(str(event.group_name))
