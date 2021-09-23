@@ -79,6 +79,6 @@ class RequestHandler(BaseHTTPRequestHandler):
 if __name__ == "__main__":
     global dailydict
     dailydict = []
-    addr = ('', 2333)
+    addr = ('', 1314)
     server = HTTPServer(addr, RequestHandler)
     server.serve_forever()
