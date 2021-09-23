@@ -12,7 +12,7 @@ if __name__ == '__main__':
     def on_friend_message(event: FriendMessage):
         if str(event.message_chain) == '你好':
             return bot.send(event, 'Hello, World!')
-    @bot.on(RequestEvent)
-    def on_group_invited(event: RequestEvent):
-        print(RequestEvent)
+    @bot.on(Event)
+    def on_group_invited(event: Event):
+        print(Event)
     bot.run()
