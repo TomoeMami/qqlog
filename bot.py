@@ -14,5 +14,5 @@ if __name__ == '__main__':
             return bot.send(event, 'Hello, World!')
     @bot.on(Event)
     def on_group_invited(event: Event):
-        print(Event)
+        print(str(Event))
     bot.run()
