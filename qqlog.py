@@ -63,19 +63,19 @@ class RequestHandler(BaseHTTPRequestHandler):
                     title = dat['meta']['detail_1']['desc']
                     char = char + ' ['+title+']'+'('+url+')'
             if replymark == 1:
-                print(msgid)
+                # print(msgid)
                 self.send_response(200)
-                self.send_header("Content-type", "application/json")
+                # self.send_header("Content-type", "application/json")
                 self.end_headers()
-                body = {
-                        'command': "mute",  
-                        'content': {
-                            "sessionKey":"",
-                            "target":614391357,
-                            "memberId":1245464567,
-                            "time":1800
-                            }}
-                self.wfile.write(json.dumps(body).encode('utf-8'))
+                # body = {
+                #         'command': "mute",  
+                #         'content': {
+                #             "sessionKey":"",
+                #             "target":614391357,
+                #             "memberId":1245464567,
+                #             "time":1800
+                #             }}
+                # self.wfile.write(json.dumps(body).encode('utf-8'))
             else:
                 self.send_response(200)
                 self.end_headers()
