@@ -76,7 +76,6 @@ class RequestHandler(BaseHTTPRequestHandler):
         elif json_obj['type'] == 'FriendMessage':
             msgchain = json_obj['messageChain']
             senderid = json_obj['sender']['id']
-            print(json_obj)
             for i in msgchain:
                 if i['type'] == 'Plain':
                     if i['text'] == '你好':
@@ -95,7 +94,6 @@ class RequestHandler(BaseHTTPRequestHandler):
                                     ]}}
                         self.wfile.write(json.dumps(body).encode('utf-8'))
         elif json_obj['type'] == 'BotInvitedJoinGroupRequestEvent':
-            print(json_obj)
             if json_obj['fromId'] == '1747222904':
                 self.send_response(200)
                 self.send_header("Content-type", "application/json")
@@ -112,7 +110,6 @@ class RequestHandler(BaseHTTPRequestHandler):
                             }}
                 self.wfile.write(json.dumps(body).encode('utf-8'))
         elif json_obj['type'] == 'MemberJoinRequestEvent':
-            print(json_obj)
             blacklist = {''}
             if json_obj['fromId'] in blacklist:
                 self.send_response(200)
