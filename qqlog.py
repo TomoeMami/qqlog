@@ -39,6 +39,7 @@ class RequestHandler(BaseHTTPRequestHandler):
                 if i['type'] == 'Source':
                     gettime = time.strftime("%H:%M:%S ", time.localtime(i['time']))
                     char = char + gettime +' '+sendername + '：\n\n'
+                    msgid = i['id']
                 elif i['type'] == 'Quote':
                     char = char + '<blockquote>'+ i['origin'][0]['text'] +'</blockquote>\n '
                 elif i['type'] == 'Plain':
@@ -66,14 +67,11 @@ class RequestHandler(BaseHTTPRequestHandler):
                 self.send_header("Content-type", "application/json")
                 self.end_headers()
                 body = {
-                        'command': "sendGroupMessage",  
+                        'command': "recall",  
                         'content': {
                             "sessionKey":"",
-                            "target":614391357,
-                            "messageChain":[
-                                { "type":"Plain", "text":"hello\n" },
-                                { "type":"Plain", "text":"world" }
-                            ]}}
+                            "target":int(msgid)
+                            }}
                 self.wfile.write(json.dumps(body).encode('utf-8'))
             else:
                 self.send_response(200)
@@ -84,7 +82,7 @@ class RequestHandler(BaseHTTPRequestHandler):
             dailydict.append(char)
             if len(dailydict) >= 10:
                 toyear = datetime.datetime.now().strftime('%Y')
-                tomonth = datetime.datetime.now().strftime('%Y-%m')
+                tomonth = datetime.datetime.now().strftime('%Y-%m') 
                 today = datetime.datetime.now().strftime('%Y-%m-%d')
                 mkdir('./'+toyear)
                 mkdir('./'+toyear+'/'+tomonth)
