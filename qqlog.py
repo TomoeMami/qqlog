@@ -63,6 +63,7 @@ class RequestHandler(BaseHTTPRequestHandler):
                     title = dat['meta']['detail_1']['desc']
                     char = char + ' ['+title+']'+'('+url+')'
             if replymark == 1:
+                print(msgid)
                 self.send_response(200)
                 self.send_header("Content-type", "application/json")
                 self.end_headers()
@@ -70,7 +71,7 @@ class RequestHandler(BaseHTTPRequestHandler):
                         'command': "recall",  
                         'content': {
                             "sessionKey":"",
-                            "target":int(msgid)
+                            "target":msgid
                             }}
                 self.wfile.write(json.dumps(body).encode('utf-8'))
             else:
