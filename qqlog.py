@@ -159,6 +159,20 @@ class RequestHandler(BaseHTTPRequestHandler):
                             "message":""
                             }}
                 self.wfile.write(json.dumps(body).encode('utf-8'))
+        elif json_obj['type'] == 'MemberJoinEvent':
+            self.send_response(200)
+            self.send_header("Content-type", "application/json")
+            self.end_headers()
+            body = {
+                    'command': "sendGroupMessage",  
+                    'content': {
+                        "sessionKey":"",
+                        "target":614391357,
+                        "messageChain":[
+                            { "type":"Plain", "text":"请新人查看群公告\n" },
+                            { "type":"Plain", "text":"本群所有消息均存档，务必谨言慎行" }
+                        ]}}
+            self.wfile.write(json.dumps(body).encode('utf-8'))
         else:
             self.send_response(200)
             self.end_headers()
