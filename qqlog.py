@@ -29,8 +29,6 @@ class RequestHandler(BaseHTTPRequestHandler):
         json_obj = json.loads(data)
         print(json_obj)
         if json_obj['type'] == 'GroupMessage':
-            self.send_response(200)
-            self.end_headers()
             msgchain = json_obj['messageChain']
             # sendername = json_obj['sender']['memberName'] +'('+str(json_obj['sender']['id'])[:2]+'****'+str(json_obj['sender']['id'])[-2:]+')'
             sendername = json_obj['sender']['memberName']
@@ -40,10 +38,25 @@ class RequestHandler(BaseHTTPRequestHandler):
                 if i['type'] == 'Source':
                     gettime = time.strftime("%H:%M:%S ", time.localtime(i['time']))
                     char = char + gettime +' '+sendername + '：\n\n'
+                    message_id = i['id']
                 elif i['type'] == 'Quote':
                     char = char + '<blockquote>'+ i['origin'][0]['text'] +'</blockquote>\n '
                 elif i['type'] == 'Plain':
                     char = char + i['text']
+                    recallword = {'recall'}
+                    for rword in recallword:
+                        if rword in i['text']:
+                            self.send_response(200)
+                            self.send_header("Content-type", "application/json")
+                            self.end_headers()
+                            body = {
+                                'command': "recall",  
+                                'content': {
+                                    "sessionKey":"",
+                                    "target":message_id,
+                                    }}
+                            self.wfile.write(json.dumps(body).encode('utf-8'))
+                            return
                 elif i['type'] == 'Image':
                     char = char + '<img src="'+i['url']+'" />'
                 elif i['type'] == 'Face':
@@ -60,6 +73,8 @@ class RequestHandler(BaseHTTPRequestHandler):
                     url = dat['meta']['detail_1']['qqdocurl']
                     title = dat['meta']['detail_1']['desc']
                     char = char + ' ['+title+']'+'('+url+')'
+            self.send_response(200)
+            self.end_headers()
             char = char + '\n\n*****\n\n'
             char = re.sub(r'\((\d{1})\d+(\d{1})\)','(\1****\2)',char)
             print(char)
