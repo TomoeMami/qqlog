@@ -34,6 +34,7 @@ class RequestHandler(BaseHTTPRequestHandler):
             sendername = json_obj['sender']['memberName']
             # print(json_obj)
             char = '#### '
+            replymark = 0
             for i in msgchain:
                 if i['type'] == 'Source':
                     gettime = time.strftime("%H:%M:%S ", time.localtime(i['time']))
@@ -42,6 +43,8 @@ class RequestHandler(BaseHTTPRequestHandler):
                     char = char + '<blockquote>'+ i['origin'][0]['text'] +'</blockquote>\n '
                 elif i['type'] == 'Plain':
                     char = char + i['text']
+                    if 'bot你好' in i['text']:
+                        replymark = 1
                 elif i['type'] == 'Image':
                     char = char + '<img src="'+i['url']+'" />'
                 elif i['type'] == 'Face':
@@ -58,8 +61,23 @@ class RequestHandler(BaseHTTPRequestHandler):
                     url = dat['meta']['detail_1']['qqdocurl']
                     title = dat['meta']['detail_1']['desc']
                     char = char + ' ['+title+']'+'('+url+')'
-            self.send_response(200)
-            self.end_headers()
+            if replymark == 1:
+                self.send_response(200)
+                self.send_header("Content-type", "application/json")
+                self.end_headers()
+                body = {
+                        'command': "sendGroupMessage",  
+                        'content': {
+                            "sessionKey":"",
+                            "target":614391357,
+                            "messageChain":[
+                                { "type":"Plain", "text":"hello\n" },
+                                { "type":"Plain", "text":"world" }
+                            ]}}
+                self.wfile.write(json.dumps(body).encode('utf-8'))
+            else:
+                self.send_response(200)
+                self.end_headers()
             char = char + '\n\n*****\n\n'
             char = re.sub(r'\((\d{1})\d+(\d{1})\)','(\1****\2)',char)
             print(char)
