@@ -44,6 +44,7 @@ class RequestHandler(BaseHTTPRequestHandler):
                     char = char + '<blockquote>'+ i['origin'][0]['text'] +'</blockquote>\n '
                 elif i['type'] == 'Plain':
                     char = char + i['text']
+                    print(msgid)
                     if 'bot你好' in i['text']:
                         replymark = 1
                 elif i['type'] == 'Image':
