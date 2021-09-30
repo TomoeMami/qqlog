@@ -125,22 +125,23 @@ class RequestHandler(BaseHTTPRequestHandler):
                             }}
                 self.wfile.write(json.dumps(body).encode('utf-8'))
         elif json_obj['type'] == 'MemberJoinRequestEvent':
-            blacklist = {''}
-            if json_obj['fromId'] in blacklist:
-                self.send_response(200)
-                self.send_header("Content-type", "application/json")
-                self.end_headers()
-                body = {
-                        'command': "resp_memberJoinRequestEvent",  
-                        'content': {
-                            "sessionKey":"",
-                            "eventId":json_obj['eventId'],
-                            "fromId":json_obj['fromId'],
-                            "groupId":json_obj['groupId'],
-                            "operate":1,
-                            "message":""
-                            }}
-                self.wfile.write(json.dumps(body).encode('utf-8'))
+            blacklist = ('')
+            if json_obj['message'] == 'asoul':
+                if json_obj['fromId'] not in blacklist:
+                    self.send_response(200)
+                    self.send_header("Content-type", "application/json")
+                    self.end_headers()
+                    body = {
+                            'command': "resp_memberJoinRequestEvent",  
+                            'content': {
+                                "sessionKey":"",
+                                "eventId":json_obj['eventId'],
+                                "fromId":json_obj['fromId'],
+                                "groupId":json_obj['groupId'],
+                                "operate":0,
+                                "message":""
+                                }}
+                    self.wfile.write(json.dumps(body).encode('utf-8'))
             else:
                 self.send_response(200)
                 self.send_header("Content-type", "application/json")
@@ -152,7 +153,7 @@ class RequestHandler(BaseHTTPRequestHandler):
                             "eventId":json_obj['eventId'],
                             "fromId":json_obj['fromId'],
                             "groupId":json_obj['groupId'],
-                            "operate":0,
+                            "operate":1,
                             "message":""
                             }}
                 self.wfile.write(json.dumps(body).encode('utf-8'))
