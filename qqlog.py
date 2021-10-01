@@ -125,23 +125,25 @@ class RequestHandler(BaseHTTPRequestHandler):
                             }}
                 self.wfile.write(json.dumps(body).encode('utf-8'))
         elif json_obj['type'] == 'MemberJoinRequestEvent':
-            blacklist = ('')
-            # if json_obj['message'] == 'asoul':
-            if json_obj['fromId'] not in blacklist:
-                self.send_response(200)
-                self.send_header("Content-type", "application/json")
-                self.end_headers()
-                body = {
-                        'command': "resp_memberJoinRequestEvent",  
-                        'content': {
-                            "sessionKey":"",
-                            "eventId":json_obj['eventId'],
-                            "fromId":json_obj['fromId'],
-                            "groupId":json_obj['groupId'],
-                            "operate":0,
-                            "message":""
-                            }}
-                self.wfile.write(json.dumps(body).encode('utf-8'))
+            #{'type': 'MemberJoinRequestEvent', 'eventId': 1633094289803757, 'message': '问题：请输入asoul\n答案：asoul', 'fromId': 1465887523, 'groupId': 614391357, 'groupName': 'S1 A综QQ群纯良分宗', 'nick': '向晚大魔王'}
+            blacklist = ()
+            #这里直接填数字
+            if '答案：asoul' in json_obj['message']:
+                if json_obj['fromId'] not in blacklist:
+                    self.send_response(200)
+                    self.send_header("Content-type", "application/json")
+                    self.end_headers()
+                    body = {
+                            'command': "resp_memberJoinRequestEvent",  
+                            'content': {
+                                "sessionKey":"",
+                                "eventId":json_obj['eventId'],
+                                "fromId":json_obj['fromId'],
+                                "groupId":json_obj['groupId'],
+                                "operate":0,
+                                "message":""
+                                }}
+                    self.wfile.write(json.dumps(body).encode('utf-8'))
             else:
                 self.send_response(200)
                 self.send_header("Content-type", "application/json")
