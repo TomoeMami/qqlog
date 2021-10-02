@@ -21,6 +21,12 @@ def mkdir(path):
         # 如果目录存在则不创建，并提示目录已存在
         return False
 
+def respond(yourself,body):
+    yourself.send_response(200)
+    yourself.send_header("Content-type", "application/json")
+    yourself.end_headers()
+    yourself.wfile.write(json.dumps(body).encode('utf-8'))
+
 class RequestHandler(BaseHTTPRequestHandler):
     def do_POST(self):
         global dailydict
@@ -95,9 +101,6 @@ class RequestHandler(BaseHTTPRequestHandler):
             for i in msgchain:
                 if i['type'] == 'Plain':
                     if i['text'] == '你好':
-                        self.send_response(200)
-                        self.send_header("Content-type", "application/json")
-                        self.end_headers()
                         body = {
                                 'command': "sendFriendMessage",  
                                 'content': {
@@ -107,7 +110,20 @@ class RequestHandler(BaseHTTPRequestHandler):
                                         { "type":"Plain", "text":"hello\n" },
                                         { "type":"Plain", "text":"world" }
                                     ]}}
-                        self.wfile.write(json.dumps(body).encode('utf-8'))
+                        respond(self,body)
+                        # self.send_response(200)
+                        # self.send_header("Content-type", "application/json")
+                        # self.end_headers()
+                        # body = {
+                        #         'command': "sendFriendMessage",  
+                        #         'content': {
+                        #             "sessionKey":"",
+                        #             "target":senderid,
+                        #             "messageChain":[
+                        #                 { "type":"Plain", "text":"hello\n" },
+                        #                 { "type":"Plain", "text":"world" }
+                        #             ]}}
+                        # self.wfile.write(json.dumps(body).encode('utf-8'))
         elif json_obj['type'] == 'BotInvitedJoinGroupRequestEvent':
             if json_obj['fromId'] == '1747222904':
                 self.send_response(200)
