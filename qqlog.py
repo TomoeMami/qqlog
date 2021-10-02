@@ -111,24 +111,8 @@ class RequestHandler(BaseHTTPRequestHandler):
                                         { "type":"Plain", "text":"world" }
                                     ]}}
                         respond(self,body)
-                        # self.send_response(200)
-                        # self.send_header("Content-type", "application/json")
-                        # self.end_headers()
-                        # body = {
-                        #         'command': "sendFriendMessage",  
-                        #         'content': {
-                        #             "sessionKey":"",
-                        #             "target":senderid,
-                        #             "messageChain":[
-                        #                 { "type":"Plain", "text":"hello\n" },
-                        #                 { "type":"Plain", "text":"world" }
-                        #             ]}}
-                        # self.wfile.write(json.dumps(body).encode('utf-8'))
         elif json_obj['type'] == 'BotInvitedJoinGroupRequestEvent':
             if json_obj['fromId'] == '1747222904':
-                self.send_response(200)
-                self.send_header("Content-type", "application/json")
-                self.end_headers()
                 body = {
                         'command': "resp_botInvitedJoinGroupRequestEvent",  
                         'content': {
@@ -139,16 +123,13 @@ class RequestHandler(BaseHTTPRequestHandler):
                             "operate":0,
                             "message":""
                             }}
-                self.wfile.write(json.dumps(body).encode('utf-8'))
+                respond(self,body)
         elif json_obj['type'] == 'MemberJoinRequestEvent':
             #{'type': 'MemberJoinRequestEvent', 'eventId': 1633094289803757, 'message': '问题：请输入asoul\n答案：asoul', 'fromId': 1465887523, 'groupId': 614391357, 'groupName': 'S1 A综QQ群纯良分宗', 'nick': '向晚大魔王'}
             blacklist = ()
             #这里直接填数字
             if '答案：asoul' in json_obj['message']:
                 if json_obj['fromId'] not in blacklist:
-                    self.send_response(200)
-                    self.send_header("Content-type", "application/json")
-                    self.end_headers()
                     body = {
                             'command': "resp_memberJoinRequestEvent",  
                             'content': {
@@ -159,11 +140,8 @@ class RequestHandler(BaseHTTPRequestHandler):
                                 "operate":0,
                                 "message":""
                                 }}
-                    self.wfile.write(json.dumps(body).encode('utf-8'))
+                    respond(self,body)
             else:
-                self.send_response(200)
-                self.send_header("Content-type", "application/json")
-                self.end_headers()
                 body = {
                         'command': "resp_memberJoinRequestEvent",  
                         'content': {
@@ -174,11 +152,8 @@ class RequestHandler(BaseHTTPRequestHandler):
                             "operate":1,
                             "message":""
                             }}
-                self.wfile.write(json.dumps(body).encode('utf-8'))
+                respond(self,body)
         elif json_obj['type'] == 'MemberJoinEvent':
-            self.send_response(200)
-            self.send_header("Content-type", "application/json")
-            self.end_headers()
             body = {
                     'command': "sendGroupMessage",  
                     'content': {
@@ -188,7 +163,7 @@ class RequestHandler(BaseHTTPRequestHandler):
                             { "type":"Plain", "text":"请新人查看群公告\n" },
                             { "type":"Plain", "text":"本群所有消息均存档，务必谨言慎行" }
                         ]}}
-            self.wfile.write(json.dumps(body).encode('utf-8'))
+            respond(self,body)
         else:
             self.send_response(200)
             self.end_headers()
