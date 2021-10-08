@@ -33,7 +33,6 @@ class RequestHandler(BaseHTTPRequestHandler):
         data = self.rfile.read(int(self.headers['content-length']))
         data = unquote(str(data, encoding='utf-8'))
         json_obj = json.loads(data)
-        print(json_obj)
         if json_obj['type'] == 'GroupMessage':
             msgchain = json_obj['messageChain']
             # sendername = json_obj['sender']['memberName'] +'('+str(json_obj['sender']['id'])[:2]+'****'+str(json_obj['sender']['id'])[-2:]+')'
@@ -84,7 +83,6 @@ class RequestHandler(BaseHTTPRequestHandler):
             self.end_headers()
             char = char + '\n\n*****\n\n'
             char = re.sub(r'\((\d{1})\d+(\d{1})\)','(\1****\2)',char)
-            print(char)
             dailydict.append(char)
             if len(dailydict) >= 10:
                 toyear = datetime.datetime.now().strftime('%Y')
