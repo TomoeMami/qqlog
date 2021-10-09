@@ -3,3 +3,5 @@
 采取mirai bot直接转发聊天信息到自建http server实现，简单但是够用了。
 
 本软件使用到[[mirai-api-http][https://github.com/project-mirai/mirai-api-http]]，由于其采用AGPL协议，故依此协议开源。
+
+bilibili解析功能来自[[nonebot_plugin_analysis_bilibili][https://github.com/mengshouer/nonebot_plugin_analysis_bilibili]]
