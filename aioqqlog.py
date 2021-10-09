@@ -106,7 +106,7 @@ async def post_handler(request):
                                     { "type":"Plain", "text":"hello\n" },
                                     { "type":"Plain", "text":"world" }
                                 ]}}
-                    web.json_response(body)
+                    return web.json_response(data=body)
     # elif json_obj['type'] == 'BotInvitedJoinGroupRequestEvent':
     #     if json_obj['fromId'] == '1747222904':
     #         body = {
