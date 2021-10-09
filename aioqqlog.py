@@ -77,8 +77,7 @@ async def post_handler(request):
         #     #             "time":1800
         #     #             }}
         #     # self.wfile.write(json.dumps(body).encode('utf-8'))
-        # else:
-        web.Response()
+        # else
         char = char + '\n\n*****\n\n'
         char = re.sub(r'\((\d{1})\d+(\d{1})\)','(\1****\2)',char)
         dailydict.append(char)
@@ -91,6 +90,8 @@ async def post_handler(request):
             with open ('./'+toyear+'/'+tomonth+'/'+today+'.md','a',encoding='utf-8') as f:
                 f.writelines(dailydict)
             dailydict.clear()
+        print(char)
+        return web.Response()
     elif json_obj['type'] == 'FriendMessage':
         msgchain = json_obj['messageChain']
         senderid = json_obj['sender']['id']
