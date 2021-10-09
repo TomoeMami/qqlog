@@ -104,9 +104,9 @@ async def post_handler(request):
             dailydict.clear()
         print(char)
         if '\'type\': \'App\'' in str(msgchain):
-            b23_url = b23_extract(str(msgchain))
+            b23_url = await b23_extract(str(msgchain))
             url = await extract(b23_url)
-            msg_text,msg_pic_url = video_detail(url)
+            msg_text,msg_pic_url = await video_detail(url)
             body = {
                     'command': "sendGroupMessage",
                     'content': {
