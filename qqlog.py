@@ -70,7 +70,7 @@ class RequestHandler(BaseHTTPRequestHandler):
             #     # self.send_header("Content-type", "application/json")
             #     self.end_headers()
             #     # body = {
-            #     #         'command': "mute",  
+            #     #         'command': "mute",
             #     #         'content': {
             #     #             "sessionKey":"",
             #     #             "target":614391357,
@@ -86,7 +86,7 @@ class RequestHandler(BaseHTTPRequestHandler):
             dailydict.append(char)
             if len(dailydict) >= 10:
                 toyear = datetime.datetime.now().strftime('%Y')
-                tomonth = datetime.datetime.now().strftime('%Y-%m') 
+                tomonth = datetime.datetime.now().strftime('%Y-%m')
                 today = datetime.datetime.now().strftime('%Y-%m-%d')
                 mkdir('./'+toyear)
                 mkdir('./'+toyear+'/'+tomonth)
@@ -94,13 +94,14 @@ class RequestHandler(BaseHTTPRequestHandler):
                     f.writelines(dailydict)
                 dailydict.clear()
         elif json_obj['type'] == 'FriendMessage':
+            print(json_obj)
             msgchain = json_obj['messageChain']
             senderid = json_obj['sender']['id']
             for i in msgchain:
                 if i['type'] == 'Plain':
                     if i['text'] == '你好':
                         body = {
-                                'command': "sendFriendMessage",  
+                                'command': "sendFriendMessage",
                                 'content': {
                                     "sessionKey":"",
                                     "target":senderid,
@@ -112,7 +113,7 @@ class RequestHandler(BaseHTTPRequestHandler):
         elif json_obj['type'] == 'BotInvitedJoinGroupRequestEvent':
             if json_obj['fromId'] == '1747222904':
                 body = {
-                        'command': "resp_botInvitedJoinGroupRequestEvent",  
+                        'command': "resp_botInvitedJoinGroupRequestEvent",
                         'content': {
                             "sessionKey":"",
                             "eventId":json_obj['eventId'],
@@ -129,7 +130,7 @@ class RequestHandler(BaseHTTPRequestHandler):
             if '答案：asoul' in json_obj['message']:
                 if json_obj['fromId'] not in blacklist:
                     body = {
-                            'command': "resp_memberJoinRequestEvent",  
+                            'command': "resp_memberJoinRequestEvent",
                             'content': {
                                 "sessionKey":"",
                                 "eventId":json_obj['eventId'],
@@ -141,7 +142,7 @@ class RequestHandler(BaseHTTPRequestHandler):
                     respond(self,body)
             else:
                 body = {
-                        'command': "resp_memberJoinRequestEvent",  
+                        'command': "resp_memberJoinRequestEvent",
                         'content': {
                             "sessionKey":"",
                             "eventId":json_obj['eventId'],
@@ -153,7 +154,7 @@ class RequestHandler(BaseHTTPRequestHandler):
                 respond(self,body)
         elif json_obj['type'] == 'MemberJoinEvent':
             body = {
-                    'command': "sendGroupMessage",  
+                    'command': "sendGroupMessage",
                     'content': {
                         "sessionKey":"",
                         "target":614391357,
