@@ -78,7 +78,7 @@ async def post_handler(request):
         #     #             }}
         #     # self.wfile.write(json.dumps(body).encode('utf-8'))
         # else:
-        web.response()
+        web.Response()
         char = char + '\n\n*****\n\n'
         char = re.sub(r'\((\d{1})\d+(\d{1})\)','(\1****\2)',char)
         dailydict.append(char)
@@ -106,7 +106,7 @@ async def post_handler(request):
                                     { "type":"Plain", "text":"hello\n" },
                                     { "type":"Plain", "text":"world" }
                                 ]}}
-                    web.response(text=body)
+                    web.json_response(body)
     # elif json_obj['type'] == 'BotInvitedJoinGroupRequestEvent':
     #     if json_obj['fromId'] == '1747222904':
     #         body = {
