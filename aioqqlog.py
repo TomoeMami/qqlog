@@ -120,7 +120,7 @@ async def post_handler(request):
                             "operate":0,
                             "message":""
                             }}
-        return web.json_response(body)
+                return web.json_response(body)
         else:
             body = {
                     'command': "resp_memberJoinRequestEvent",
@@ -132,7 +132,7 @@ async def post_handler(request):
                         "operate":1,
                         "message":""
                         }}
-        return web.json_response(body)
+            return web.json_response(body)
     elif json_obj['type'] == 'MemberJoinEvent':
         body = {
                 'command': "sendGroupMessage",
