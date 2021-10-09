@@ -34,9 +34,7 @@ async def post_handler(request):
     json_obj = await request.json()
     if json_obj['type'] == 'GroupMessage':
         msgchain = json_obj['messageChain']
-        # sendername = json_obj['sender']['memberName'] +'('+str(json_obj['sender']['id'])[:2]+'****'+str(json_obj['sender']['id'])[-2:]+')'
         sendername = json_obj['sender']['memberName']
-        # print(json_obj)
         char = '#### '
         replymark = 0
         for i in msgchain:
@@ -63,21 +61,6 @@ async def post_handler(request):
                 url = dat['meta']['detail_1']['qqdocurl']
                 title = dat['meta']['detail_1']['desc']
                 char = char + ' ['+title+']'+'('+url+')'
-        # if replymark == 1:
-        #     # print(msgid)
-        #     self.send_response(200)
-        #     # self.send_header("Content-type", "application/json")
-        #     self.end_headers()
-        #     # body = {
-        #     #         'command': "mute",
-        #     #         'content': {
-        #     #             "sessionKey":"",
-        #     #             "target":614391357,
-        #     #             "memberId":1245464567,
-        #     #             "time":1800
-        #     #             }}
-        #     # self.wfile.write(json.dumps(body).encode('utf-8'))
-        # else
         char = char + '\n\n*****\n\n'
         char = re.sub(r'\((\d{1})\d+(\d{1})\)','(\1****\2)',char)
         dailydict.append(char)
@@ -108,62 +91,61 @@ async def post_handler(request):
                                     { "type":"Plain", "text":"world" }
                                 ]}}
                     return web.json_response(data=body)
-    # elif json_obj['type'] == 'BotInvitedJoinGroupRequestEvent':
-    #     if json_obj['fromId'] == '1747222904':
-    #         body = {
-    #                 'command': "resp_botInvitedJoinGroupRequestEvent",
-    #                 'content': {
-    #                     "sessionKey":"",
-    #                     "eventId":json_obj['eventId'],
-    #                     "fromId":json_obj['fromId'],
-    #                     "groupId":json_obj['groupId'],
-    #                     "operate":0,
-    #                     "message":""
-    #                     }}
-    #         respond(self,body)
-    # elif json_obj['type'] == 'MemberJoinRequestEvent':
-    #     #{'type': 'MemberJoinRequestEvent', 'eventId': 1633094289803757, 'message': '问题：请输入asoul\n答案：asoul', 'fromId': 1465887523, 'groupId': 614391357, 'groupName': 'S1 A综QQ群纯良分宗', 'nick': '向晚大魔王'}
-    #     blacklist = ()
-    #     #这里直接填数字
-    #     if '答案：asoul' in json_obj['message']:
-    #         if json_obj['fromId'] not in blacklist:
-    #             body = {
-    #                     'command': "resp_memberJoinRequestEvent",
-    #                     'content': {
-    #                         "sessionKey":"",
-    #                         "eventId":json_obj['eventId'],
-    #                         "fromId":json_obj['fromId'],
-    #                         "groupId":json_obj['groupId'],
-    #                         "operate":0,
-    #                         "message":""
-    #                         }}
-    #             respond(self,body)
-    #     else:
-    #         body = {
-    #                 'command': "resp_memberJoinRequestEvent",
-    #                 'content': {
-    #                     "sessionKey":"",
-    #                     "eventId":json_obj['eventId'],
-    #                     "fromId":json_obj['fromId'],
-    #                     "groupId":json_obj['groupId'],
-    #                     "operate":1,
-    #                     "message":""
-    #                     }}
-    #         respond(self,body)
-    # elif json_obj['type'] == 'MemberJoinEvent':
-    #     body = {
-    #             'command': "sendGroupMessage",
-    #             'content': {
-    #                 "sessionKey":"",
-    #                 "target":614391357,
-    #                 "messageChain":[
-    #                     { "type":"Plain", "text":"请新人查看群公告\n" },
-    #                     { "type":"Plain", "text":"本群所有消息均存档，务必谨言慎行" }
-    #                 ]}}
-    #     respond(self,body)
-    # else:
-    #     self.send_response(200)
-    #     self.end_headers()
+    elif json_obj['type'] == 'BotInvitedJoinGroupRequestEvent':
+        if json_obj['fromId'] == '1747222904':
+            body = {
+                    'command': "resp_botInvitedJoinGroupRequestEvent",
+                    'content': {
+                        "sessionKey":"",
+                        "eventId":json_obj['eventId'],
+                        "fromId":json_obj['fromId'],
+                        "groupId":json_obj['groupId'],
+                        "operate":0,
+                        "message":""
+                        }}
+        return web.json_response(body)
+    elif json_obj['type'] == 'MemberJoinRequestEvent':
+        #{'type': 'MemberJoinRequestEvent', 'eventId': 1633094289803757, 'message': '问题：请输入asoul\n答案：asoul', 'fromId': 1465887523, 'groupId': 614391357, 'groupName': 'S1 A综QQ群纯良分宗', 'nick': '向晚大魔王'}
+        blacklist = ()
+        #这里直接填数字
+        if '答案：asoul' in json_obj['message']:
+            if json_obj['fromId'] not in blacklist:
+                body = {
+                        'command': "resp_memberJoinRequestEvent",
+                        'content': {
+                            "sessionKey":"",
+                            "eventId":json_obj['eventId'],
+                            "fromId":json_obj['fromId'],
+                            "groupId":json_obj['groupId'],
+                            "operate":0,
+                            "message":""
+                            }}
+        return web.json_response(body)
+        else:
+            body = {
+                    'command': "resp_memberJoinRequestEvent",
+                    'content': {
+                        "sessionKey":"",
+                        "eventId":json_obj['eventId'],
+                        "fromId":json_obj['fromId'],
+                        "groupId":json_obj['groupId'],
+                        "operate":1,
+                        "message":""
+                        }}
+        return web.json_response(body)
+    elif json_obj['type'] == 'MemberJoinEvent':
+        body = {
+                'command': "sendGroupMessage",
+                'content': {
+                    "sessionKey":"",
+                    "target":614391357,
+                    "messageChain":[
+                        { "type":"Plain", "text":"请新人查看群公告\n" },
+                        { "type":"Plain", "text":"本群所有消息均存档，务必谨言慎行" }
+                    ]}}
+        return web.json_response(body)
+    else:
+        return web.Response()
 
 app = web.Application()
 app.add_routes(routes)
