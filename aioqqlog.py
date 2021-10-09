@@ -1,8 +1,14 @@
 from aiohttp import web
 import json,time,re,datetime,os
 from urllib.parse import unquote
+import aiohttp
 
-
+async def b23_extract(text):
+    b23 = re.compile(r'b23.tv/(\w+)|(bili(22|23|33|2233).cn)/(\w+)', re.I).search(text.replace("\\",""))
+    url = f'https://{b23[0]}'
+    async with aiohttp.request('GET', url, timeout=aiohttp.client.ClientTimeout(10)) as resp:
+        r = str(resp.url)
+    return r
 
 def mkdir(path):
     # 去除首位空格
@@ -24,10 +30,6 @@ def mkdir(path):
         return False
 
 routes = web.RouteTableDef()
-
-@routes.get('/hello')
-async def hello(request):
-    return web.Response(text="Hello, world")
 
 @routes.post('/')
 async def post_handler(request):
