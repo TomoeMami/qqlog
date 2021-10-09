@@ -31,87 +31,82 @@ async def hello(request):
 
 @routes.post('/')
 async def post_handler(request):
-    print(await request.json())
-    # global dailydict
-    # data = self.rfile.read(int(self.headers['content-length']))
-    # data = unquote(str(data, encoding='utf-8'))
-    # json_obj = json.loads(data)
-    # if json_obj['type'] == 'GroupMessage':
-    #     msgchain = json_obj['messageChain']
-    #     # sendername = json_obj['sender']['memberName'] +'('+str(json_obj['sender']['id'])[:2]+'****'+str(json_obj['sender']['id'])[-2:]+')'
-    #     sendername = json_obj['sender']['memberName']
-    #     # print(json_obj)
-    #     char = '#### '
-    #     replymark = 0
-    #     for i in msgchain:
-    #         if i['type'] == 'Source':
-    #             gettime = time.strftime("%H:%M:%S ", time.localtime(i['time']))
-    #             char = char + gettime +' '+sendername + '：\n\n'
-    #         elif i['type'] == 'Quote':
-    #             char = char + '<blockquote>'+ i['origin'][0]['text'] +'</blockquote>\n '
-    #         elif i['type'] == 'Plain':
-    #             char = char + i['text']
-    #         elif i['type'] == 'Image':
-    #             char = char + '![]('+i['url']+'")'
-    #         elif i['type'] == 'Face':
-    #             char = char + '[' + i['name'] + ']'
-    #         elif i['type'] == 'At':
-    #             # char = chat + '(@'+str(i['target'])[:2]+'****'+str(i['target'])[-2:]+') '
-    #             char = char + '(@了某人) '
-    #         elif i['type'] == 'Xml':
-    #             url = re.findall(r'url=\"(.+?)\"',i['xml'])[0]
-    #             title = re.findall(r'\<title\>(.+?)\</title\>',i['xml'])[0]
-    #             char = char + ' ['+title+']'+'('+url+')'
-    #         elif i['type'] == 'App':
-    #             dat = json.loads(i['content'])
-    #             url = dat['meta']['detail_1']['qqdocurl']
-    #             title = dat['meta']['detail_1']['desc']
-    #             char = char + ' ['+title+']'+'('+url+')'
-    #     # if replymark == 1:
-    #     #     # print(msgid)
-    #     #     self.send_response(200)
-    #     #     # self.send_header("Content-type", "application/json")
-    #     #     self.end_headers()
-    #     #     # body = {
-    #     #     #         'command': "mute",
-    #     #     #         'content': {
-    #     #     #             "sessionKey":"",
-    #     #     #             "target":614391357,
-    #     #     #             "memberId":1245464567,
-    #     #     #             "time":1800
-    #     #     #             }}
-    #     #     # self.wfile.write(json.dumps(body).encode('utf-8'))
-    #     # else:
-    #     self.send_response(200)
-    #     self.end_headers()
-    #     char = char + '\n\n*****\n\n'
-    #     char = re.sub(r'\((\d{1})\d+(\d{1})\)','(\1****\2)',char)
-    #     dailydict.append(char)
-    #     if len(dailydict) >= 10:
-    #         toyear = datetime.datetime.now().strftime('%Y')
-    #         tomonth = datetime.datetime.now().strftime('%Y-%m')
-    #         today = datetime.datetime.now().strftime('%Y-%m-%d')
-    #         mkdir('./'+toyear)
-    #         mkdir('./'+toyear+'/'+tomonth)
-    #         with open ('./'+toyear+'/'+tomonth+'/'+today+'.md','a',encoding='utf-8') as f:
-    #             f.writelines(dailydict)
-    #         dailydict.clear()
-    # elif json_obj['type'] == 'FriendMessage':
-    #     msgchain = json_obj['messageChain']
-    #     senderid = json_obj['sender']['id']
-    #     for i in msgchain:
-    #         if i['type'] == 'Plain':
-    #             if i['text'] == '你好':
-    #                 body = {
-    #                         'command': "sendFriendMessage",
-    #                         'content': {
-    #                             "sessionKey":"",
-    #                             "target":senderid,
-    #                             "messageChain":[
-    #                                 { "type":"Plain", "text":"hello\n" },
-    #                                 { "type":"Plain", "text":"world" }
-    #                             ]}}
-    #                 respond(self,body)
+    json_obj = await request.json()
+    if json_obj['type'] == 'GroupMessage':
+        msgchain = json_obj['messageChain']
+        # sendername = json_obj['sender']['memberName'] +'('+str(json_obj['sender']['id'])[:2]+'****'+str(json_obj['sender']['id'])[-2:]+')'
+        sendername = json_obj['sender']['memberName']
+        # print(json_obj)
+        char = '#### '
+        replymark = 0
+        for i in msgchain:
+            if i['type'] == 'Source':
+                gettime = time.strftime("%H:%M:%S ", time.localtime(i['time']))
+                char = char + gettime +' '+sendername + '：\n\n'
+            elif i['type'] == 'Quote':
+                char = char + '<blockquote>'+ i['origin'][0]['text'] +'</blockquote>\n '
+            elif i['type'] == 'Plain':
+                char = char + i['text']
+            elif i['type'] == 'Image':
+                char = char + '![]('+i['url']+'")'
+            elif i['type'] == 'Face':
+                char = char + '[' + i['name'] + ']'
+            elif i['type'] == 'At':
+                # char = chat + '(@'+str(i['target'])[:2]+'****'+str(i['target'])[-2:]+') '
+                char = char + '(@了某人) '
+            elif i['type'] == 'Xml':
+                url = re.findall(r'url=\"(.+?)\"',i['xml'])[0]
+                title = re.findall(r'\<title\>(.+?)\</title\>',i['xml'])[0]
+                char = char + ' ['+title+']'+'('+url+')'
+            elif i['type'] == 'App':
+                dat = json.loads(i['content'])
+                url = dat['meta']['detail_1']['qqdocurl']
+                title = dat['meta']['detail_1']['desc']
+                char = char + ' ['+title+']'+'('+url+')'
+        # if replymark == 1:
+        #     # print(msgid)
+        #     self.send_response(200)
+        #     # self.send_header("Content-type", "application/json")
+        #     self.end_headers()
+        #     # body = {
+        #     #         'command': "mute",
+        #     #         'content': {
+        #     #             "sessionKey":"",
+        #     #             "target":614391357,
+        #     #             "memberId":1245464567,
+        #     #             "time":1800
+        #     #             }}
+        #     # self.wfile.write(json.dumps(body).encode('utf-8'))
+        # else:
+        web.response()
+        char = char + '\n\n*****\n\n'
+        char = re.sub(r'\((\d{1})\d+(\d{1})\)','(\1****\2)',char)
+        dailydict.append(char)
+        if len(dailydict) >= 10:
+            toyear = datetime.datetime.now().strftime('%Y')
+            tomonth = datetime.datetime.now().strftime('%Y-%m')
+            today = datetime.datetime.now().strftime('%Y-%m-%d')
+            mkdir('./'+toyear)
+            mkdir('./'+toyear+'/'+tomonth)
+            with open ('./'+toyear+'/'+tomonth+'/'+today+'.md','a',encoding='utf-8') as f:
+                f.writelines(dailydict)
+            dailydict.clear()
+    elif json_obj['type'] == 'FriendMessage':
+        msgchain = json_obj['messageChain']
+        senderid = json_obj['sender']['id']
+        for i in msgchain:
+            if i['type'] == 'Plain':
+                if i['text'] == '你好':
+                    body = {
+                            'command': "sendFriendMessage",
+                            'content': {
+                                "sessionKey":"",
+                                "target":senderid,
+                                "messageChain":[
+                                    { "type":"Plain", "text":"hello\n" },
+                                    { "type":"Plain", "text":"world" }
+                                ]}}
+                    web.response(text=body)
     # elif json_obj['type'] == 'BotInvitedJoinGroupRequestEvent':
     #     if json_obj['fromId'] == '1747222904':
     #         body = {
