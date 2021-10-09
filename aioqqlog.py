@@ -103,7 +103,7 @@ async def post_handler(request):
                         "operate":0,
                         "message":""
                         }}
-        return web.json_response(body)
+            return web.json_response(body)
     elif json_obj['type'] == 'MemberJoinRequestEvent':
         #{'type': 'MemberJoinRequestEvent', 'eventId': 1633094289803757, 'message': '问题：请输入asoul\n答案：asoul', 'fromId': 1465887523, 'groupId': 614391357, 'groupName': 'S1 A综QQ群纯良分宗', 'nick': '向晚大魔王'}
         blacklist = ()
