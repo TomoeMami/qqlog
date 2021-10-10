@@ -104,10 +104,11 @@ async def post_handler(request):
             dailydict.clear()
         print(char)
         if '\'type\': \'App\'' in str(msgchain):
-            b23_url = await b23_extract(str(msgchain))
-            url = await extract(b23_url)
-            msg_text,msg_pic_url = await video_detail(url)
-            body = {
+            if '哔哩哔哩' in str(msgchain):
+                b23_url = await b23_extract(str(msgchain))
+                url = await extract(b23_url)
+                msg_text,msg_pic_url = await video_detail(url)
+                body = {
                     'command': "sendGroupMessage",
                     'content': {
                         "sessionKey":"",
@@ -116,7 +117,7 @@ async def post_handler(request):
                             { "type":"Plain", "text":msg_text },
                             { "type":"Image", "url":msg_pic_url }
                         ]}}
-            return web.json_response(data=body)
+                return web.json_response(data=body)
         else:
             return web.Response()
     elif json_obj['type'] == 'FriendMessage':
