@@ -186,7 +186,8 @@ async def post_handler(request):
                     "target":614391357,
                     "messageChain":[
                         { "type":"Plain", "text":"请新人查看群公告\n" },
-                        { "type":"Plain", "text":"本群所有消息均存档，务必谨言慎行" }
+                        { "type":"Plain", "text":"本群所有消息均存档，务必谨言慎行\n" },
+                        { "type":"Plain", "text":"不盒不键政不违法不搞黄色"}
                     ]}}
         return web.json_response(body)
     else:
