@@ -56,6 +56,14 @@ def mkdir(path):
         # 如果目录存在则不创建，并提示目录已存在
         return False
 
+
+global dailydict
+dailydict = []
+global pushmsg
+pushmsg = []
+global pushflag
+pushflag = False
+
 routes = web.RouteTableDef()
 
 @routes.post('/')
@@ -212,10 +220,5 @@ async def post_handler(request):
 
 app = web.Application()
 app.add_routes(routes)
-global dailydict
-dailydict = []
-global pushmsg
-pushmsg = []
-global pushflag
-pushflag = False
+
 web.run_app(app, host='0.0.0.0', port=1314)
