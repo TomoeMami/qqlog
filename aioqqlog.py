@@ -111,36 +111,22 @@ async def post_handler(request):
                 f.writelines(dailydict)
             dailydict.clear()
         print(char)
-        biliurl = await extract(str(msgchain))
-        if biliurl:
-        # if '\'type\': \'App\'' in str(msgchain) and '哔哩哔哩' in str(msgchain):
-        #     b23_url = await b23_extract(str(msgchain))
-        #     url = await extract(b23_url)
-            msg_text,msg_pic_url = await video_detail(biliurl)
-            body = {
-                'command': "sendGroupMessage",
-                'content': {
-                    "sessionKey":"",
-                    "target":614391357,
-                    "messageChain":[
-                        { "type":"Plain", "text":msg_text },
-                        { "type":"Image", "url":msg_pic_url }
-                    ]}}
-            return web.json_response(data=body)
-        # elif pushflag:
-        #     pushflag = False
-        #     body = {
-        #         'command': "sendGroupMessage",
-        #         'content': {
-        #             "sessionKey":"",
-        #             "target":614391357,
-        #             "messageChain":pushmsg
-        #         }}
-        #     pushmsg.clear()
-        #     return web.json_response(body)
-        else:
-            return web.Response()
-        # return web.Response()
+#        biliurl = await extract(str(msgchain))
+#        if biliurl:
+#            msg_text,msg_pic_url = await video_detail(biliurl)
+#            body = {
+#                'command': "sendGroupMessage",
+#                'content': {
+#                    "sessionKey":"",
+#                    "target":614391357,
+#                    "messageChain":[
+#                        { "type":"Plain", "text":msg_text },
+#                        { "type":"Image", "url":msg_pic_url }
+#                    ]}}
+#            return web.json_response(data=body)
+#        else:
+#            return web.Response()
+        return web.Response()
     elif json_obj['type'] == 'FriendMessage':
         msgchain = json_obj['messageChain']
         senderid = json_obj['sender']['id']
