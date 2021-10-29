@@ -59,10 +59,10 @@ def mkdir(path):
 
 global dailydict
 dailydict = []
-global pushmsg
-pushmsg = []
-global pushflag
-pushflag = False
+# global pushmsg
+# pushmsg = []
+# global pushflag
+# pushflag = False
 
 routes = web.RouteTableDef()
 
@@ -127,17 +127,17 @@ async def post_handler(request):
                         { "type":"Image", "url":msg_pic_url }
                     ]}}
             return web.json_response(data=body)
-        elif pushflag:
-            pushflag = False
-            body = {
-                'command': "sendGroupMessage",
-                'content': {
-                    "sessionKey":"",
-                    "target":614391357,
-                    "messageChain":pushmsg
-                }}
-            pushmsg.clear()
-            return web.json_response(body)
+        # elif pushflag:
+        #     pushflag = False
+        #     body = {
+        #         'command': "sendGroupMessage",
+        #         'content': {
+        #             "sessionKey":"",
+        #             "target":614391357,
+        #             "messageChain":pushmsg
+        #         }}
+        #     pushmsg.clear()
+        #     return web.json_response(body)
         else:
             return web.Response()
         # return web.Response()
@@ -211,10 +211,10 @@ async def post_handler(request):
                         { "type":"Plain", "text":"不盒不键政不违法不搞黄色"}
                     ]}}
         return web.json_response(body)
-    elif json_obj['type'] == 'ReplyPush':
-        pushflag = True
-        pushmsg = json_obj['msg']
-        return web.Response()
+    # elif json_obj['type'] == 'ReplyPush':
+    #     pushflag = True
+    #     pushmsg = json_obj['msg']
+    #     return web.Response()
     else:
         return web.Response()
 
