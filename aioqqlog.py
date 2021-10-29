@@ -103,7 +103,7 @@ async def post_handler(request):
                 f.writelines(dailydict)
             dailydict.clear()
         print(char)
-        biliurl = await extract(str(msgchain)
+        biliurl = await extract(str(msgchain))
         if biliurl:
         # if '\'type\': \'App\'' in str(msgchain) and '哔哩哔哩' in str(msgchain):
         #     b23_url = await b23_extract(str(msgchain))
@@ -200,7 +200,7 @@ async def post_handler(request):
                     "sessionKey":"",
                     "target":614391357,
                     "messageChain":msgchain
-                    ]}}
+                    }}
         return web.json_response(body)
     else:
         return web.Response()
