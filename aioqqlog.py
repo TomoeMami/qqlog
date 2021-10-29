@@ -214,6 +214,8 @@ app = web.Application()
 app.add_routes(routes)
 global dailydict
 dailydict = []
+global pushmsg
 pushmsg = []
+global pushflag
 pushflag = False
 web.run_app(app, host='0.0.0.0', port=1314)
