@@ -119,6 +119,17 @@ async def post_handler(request):
                         { "type":"Image", "url":msg_pic_url }
                     ]}}
             return web.json_response(data=body)
+        elif pushflag:
+            pushflag = False
+            body = {
+                'command': "sendGroupMessage",
+                'content': {
+                    "sessionKey":"",
+                    "target":614391357,
+                    "messageChain":pushmsg
+                }}
+            pushmsg.clear()
+            return web.json_response(body)
         else:
             return web.Response()
         # return web.Response()
@@ -193,17 +204,9 @@ async def post_handler(request):
                     ]}}
         return web.json_response(body)
     elif json_obj['type'] == 'ReplyPush':
-        # msgchain = json_obj['msg']
-        msgchain = {"type":"Plain", "text":"test"}
-        body = {
-                'command': "sendGroupMessage",
-                'content': {
-                    "sessionKey":"",
-                    "target":614391357,
-                    "messageChain":[msgchain]
-        }}
-        print(body)
-        return web.json_response(body)
+        pushflag = True
+        pushmsg = json_obj['msg']
+        return web.Response()
     else:
         return web.Response()
 
@@ -211,4 +214,6 @@ app = web.Application()
 app.add_routes(routes)
 global dailydict
 dailydict = []
+pushmsg = []
+pushflag = False
 web.run_app(app, host='0.0.0.0', port=1314)
