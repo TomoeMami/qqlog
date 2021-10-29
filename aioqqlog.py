@@ -194,14 +194,14 @@ async def post_handler(request):
         return web.json_response(body)
     elif json_obj['type'] == 'ReplyPush':
         # msgchain = json_obj['msg']
-        msgchain = [{"type":"Plain", "text":"test"}]
+        msgchain = {"type":"Plain", "text":"test"}
         body = {
                 'command': "sendGroupMessage",
                 'content': {
                     "sessionKey":"",
                     "target":614391357,
-                    "messageChain":msgchain
-                    }}
+                    "messageChain":[msgchain]
+        }}
         print(body)
         return web.json_response(body)
     else:
