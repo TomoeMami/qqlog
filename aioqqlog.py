@@ -5,10 +5,13 @@ import aiohttp
 
 async def b23_extract(text):
     b23 = re.compile(r'b23.tv/(\w+)|(bili(22|23|33|2233).cn)/(\w+)', re.I).search(text.replace("\\",""))
-    url = f'https://{b23[0]}'
-    async with aiohttp.request('GET', url, timeout=aiohttp.client.ClientTimeout(10)) as resp:
-        r = str(resp.url)
-    return r
+    if b23:
+        url = f'https://{b23[0]}'
+        async with aiohttp.request('GET', url, timeout=aiohttp.client.ClientTimeout(10)) as resp:
+            r = str(resp.url)
+        return r
+    else:
+        return None
 
 async def extract(text:str):
     try:
@@ -113,8 +116,8 @@ async def post_handler(request):
         print(char)
         # biliurl = await extract(str(msgchain))
         b23_url = await b23_extract(str(msgchain))
-        biliurl = await extract(str(b23_url))
-        if biliurl:
+        if b23_url:
+            biliurl = await extract(str(b23_url))
             msg_text,msg_pic_url = await video_detail(biliurl)
             body = {
                 'command': "sendGroupMessage",
