@@ -115,24 +115,24 @@ async def post_handler(request):
             dailydict.clear()
         print(char)
         # biliurl = await extract(str(msgchain))
-        b23_url = await b23_extract(str(msgchain))
-        if b23_url:
-            biliurl = await extract(str(b23_url))
-            msg_text,msg_pic_url = await video_detail(biliurl)
-            body = {
-                'command': "sendGroupMessage",
-                'content': {
-                    "sessionKey":"",
-                    "target":614391357,
-                    "messageChain":[
-                        { "type":"Plain", "text":msg_text },
-                        { "type":"Image", "url":msg_pic_url }
-                    ]}}
-            print(body)
-            return web.json_response(body)
-        else:
-            return web.Response()
-        # return web.Response()
+      #  b23_url = await b23_extract(str(msgchain))
+      #  if b23_url:
+      #      biliurl = await extract(str(b23_url))
+      #      msg_text,msg_pic_url = await video_detail(biliurl)
+      #      body = {
+      #          'command': "sendGroupMessage",
+      #          'content': {
+      #              "sessionKey":"",
+      #              "target":614391357,
+      #              "messageChain":[
+      #                  { "type":"Plain", "text":msg_text },
+      #                  { "type":"Image", "url":msg_pic_url }
+      #              ]}}
+      #      print(body)
+      #      return web.json_response(body)
+      #  else:
+      #      return web.Response()
+        return web.Response()
     elif json_obj['type'] == 'FriendMessage':
         msgchain = json_obj['messageChain']
         senderid = json_obj['sender']['id']
