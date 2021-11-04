@@ -128,7 +128,8 @@ async def post_handler(request):
                         { "type":"Plain", "text":msg_text },
                         { "type":"Image", "url":msg_pic_url }
                     ]}}
-            return web.json_response(data=body)
+            print(body)
+            return web.json_response(body)
         else:
             return web.Response()
         # return web.Response()
