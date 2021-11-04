@@ -12,12 +12,17 @@ async def b23_extract(text):
 
 async def extract(text:str):
     try:
-        aid = re.compile(r'av\d+', re.I).search(text)
-        bvid = re.compile(r'BV([a-zA-Z0-9])+', re.I).search(text)
-        if bvid:
-            url = f'https://api.bilibili.com/x/web-interface/view?bvid={bvid[0]}'
-        elif aid:
-            url = f'https://api.bilibili.com/x/web-interface/view?aid={aid[0][2:]}'
+        # aid = re.compile(r'av\d+', re.I).search(text)
+        # bvid = re.compile(r'BV([a-zA-Z0-9])+', re.I).search(text)
+        b23 = re.compile(r'b23.tv/(\w+)|(bili(22|23|33|2233).cn)/(\w+)', re.I).search(text.replace("\\",""))
+        # if bvid:
+            # url = f'https://api.bilibili.com/x/web-interface/view?bvid={bvid[0]}'
+        # elif aid:
+            # url = f'https://api.bilibili.com/x/web-interface/view?aid={aid[0][2:]}'
+        if b23:
+            b23_url = f'https://{b23[0]}'
+            async with aiohttp.request('GET', url, timeout=aiohttp.client.ClientTimeout(10)) as resp:
+                url = str(resp.url)
         return url
     except:
         return None
@@ -111,22 +116,22 @@ async def post_handler(request):
                 f.writelines(dailydict)
             dailydict.clear()
         print(char)
-#        biliurl = await extract(str(msgchain))
-#        if biliurl:
-#            msg_text,msg_pic_url = await video_detail(biliurl)
-#            body = {
-#                'command': "sendGroupMessage",
-#                'content': {
-#                    "sessionKey":"",
-#                    "target":614391357,
-#                    "messageChain":[
-#                        { "type":"Plain", "text":msg_text },
-#                        { "type":"Image", "url":msg_pic_url }
-#                    ]}}
-#            return web.json_response(data=body)
-#        else:
-#            return web.Response()
-        return web.Response()
+       biliurl = await extract(str(msgchain))
+       if biliurl:
+           msg_text,msg_pic_url = await video_detail(biliurl)
+           body = {
+               'command': "sendGroupMessage",
+               'content': {
+                   "sessionKey":"",
+                   "target":614391357,
+                   "messageChain":[
+                       { "type":"Plain", "text":msg_text },
+                       { "type":"Image", "url":msg_pic_url }
+                   ]}}
+           return web.json_response(data=body)
+       else:
+           return web.Response()
+        # return web.Response()
     elif json_obj['type'] == 'FriendMessage':
         msgchain = json_obj['messageChain']
         senderid = json_obj['sender']['id']
