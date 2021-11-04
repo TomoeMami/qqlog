@@ -12,17 +12,12 @@ async def b23_extract(text):
 
 async def extract(text:str):
     try:
-        # aid = re.compile(r'av\d+', re.I).search(text)
-        # bvid = re.compile(r'BV([a-zA-Z0-9])+', re.I).search(text)
-        b23 = re.compile(r'b23.tv/[a-zA-Z0-9]+', re.I).search(text)
-        # if bvid:
-            # url = f'https://api.bilibili.com/x/web-interface/view?bvid={bvid[0]}'
-        # elif aid:
-            # url = f'https://api.bilibili.com/x/web-interface/view?aid={aid[0][2:]}'
-        if b23:
-            b23_url = f'https://{b23[0]}'
-            async with aiohttp.request('GET', url, timeout=aiohttp.client.ClientTimeout(10)) as resp:
-                url = str(resp.url)
+        aid = re.compile(r'av\d+', re.I).search(text)
+        bvid = re.compile(r'BV([a-zA-Z0-9])+', re.I).search(text)
+        if bvid:
+            url = f'https://api.bilibili.com/x/web-interface/view?bvid={bvid[0]}'
+        elif aid:
+            url = f'https://api.bilibili.com/x/web-interface/view?aid={aid[0][2:]}'
         return url
     except:
         return None
@@ -116,7 +111,9 @@ async def post_handler(request):
                 f.writelines(dailydict)
             dailydict.clear()
         print(char)
-        biliurl = await extract(str(msgchain))
+        # biliurl = await extract(str(msgchain))
+        b23_url = await b23_extract(str(msgchain))
+        biliurl = await extract(str(b23_url))
         if biliurl:
             msg_text,msg_pic_url = await video_detail(biliurl)
             body = {
