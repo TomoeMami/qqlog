@@ -14,7 +14,7 @@ async def extract(text:str):
     try:
         # aid = re.compile(r'av\d+', re.I).search(text)
         # bvid = re.compile(r'BV([a-zA-Z0-9])+', re.I).search(text)
-        b23 = re.compile(r'b23.tv/(\w+)|(bili(22|23|33|2233).cn)/(\w+)', re.I).search(text.replace("\\",""))
+        b23 = re.compile(r'b23.tv/[a-zA-Z0-9]+', re.I).search(text)
         # if bvid:
             # url = f'https://api.bilibili.com/x/web-interface/view?bvid={bvid[0]}'
         # elif aid:
