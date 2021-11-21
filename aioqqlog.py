@@ -198,9 +198,9 @@ async def post_handler(request):
                     "sessionKey":"",
                     "target":614391357,
                     "messageChain":[
-                        { "type":"Plain", "text":"请新人查看群公告\n" },
-                        { "type":"Plain", "text":"本群所有消息均存档，务必谨言慎行\n" },
-                        { "type":"Plain", "text":"不盒不键政不违法不搞黄色"}
+                        { "type":"Plain", "text":"欢迎来到纯良群，请新人查看群公告\n" },
+                        { "type":"Plain", "text":"本群所有消息均存档，务必谨言慎行。存档链接：https://hub.fastgit.org/TomoeMami/qqlog\n" },
+                        { "type":"Plain", "text":"不盒不涉政不违法不搞直球黄色不辱骂吵架，谢绝皮套账号"}
                     ]}}
         return web.json_response(body)
     # elif json_obj['type'] == 'ReplyPush':
