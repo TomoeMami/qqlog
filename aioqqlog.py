@@ -116,22 +116,22 @@ async def post_handler(request):
         print(char)
         # biliurl = await extract(str(msgchain))
       #  b23_url = await b23_extract(str(msgchain))
-      #  if b23_url:
-      #      biliurl = await extract(str(b23_url))
-      #      msg_text,msg_pic_url = await video_detail(biliurl)
-      #      body = {
-      #          'command': "sendGroupMessage",
-      #          'content': {
-      #              "sessionKey":"",
-      #              "target":614391357,
-      #              "messageChain":[
-      #                  { "type":"Plain", "text":msg_text },
-      #                  { "type":"Image", "url":msg_pic_url }
-      #              ]}}
-      #      print(body)
-      #      return web.json_response(body)
-      #  else:
-      #      return web.Response()
+     #    if "粒Q" in str(msgchain) :
+     #  #      biliurl = await extract(str(b23_url))
+     #    msg_text,msg_pic_url = await video_detail(biliurl)
+     #    body = {
+     #        'command': "sendGroupMessage",
+     #        'content': {
+     #            "sessionKey":"",
+     #            "target":614391357,
+     #            "messageChain":[
+     #                { "type":"Plain", "text":msg_text },
+     #                { "type":"Image", "url":msg_pic_url }
+     #            ]}}
+     #    print(body)
+     #    return web.json_response(body)
+     #    else:
+     #        return web.Response()
         return web.Response()
     elif json_obj['type'] == 'FriendMessage':
         msgchain = json_obj['messageChain']
@@ -148,6 +148,16 @@ async def post_handler(request):
                                     { "type":"Plain", "text":"hello\n" },
                                     { "type":"Plain", "text":"world" }
                                 ]}}
+                    return web.json_response(data=body)
+                if i['text'] == '开群':
+                    body = {
+                            'command': "unmuteAll",
+                            'content': {
+                                "sessionKey":"",
+                                "target":614391357
+                                }}
+                    with open ('./'+'开群记录.md','a',encoding='utf-8') as f:
+                        f.write(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')+str(senderid)+'开群\n')
                     return web.json_response(data=body)
     elif json_obj['type'] == 'BotInvitedJoinGroupRequestEvent':
         if json_obj['fromId'] == '1747222904':
@@ -200,7 +210,8 @@ async def post_handler(request):
                     "messageChain":[
                         { "type":"Plain", "text":"欢迎来到纯良群，请新人查看群公告\n" },
                         { "type":"Plain", "text":"本群所有消息均存档，务必谨言慎行。存档链接：https://hub.fastgit.org/TomoeMami/qqlog\n" },
-                        { "type":"Plain", "text":"不盒不涉政不违法不搞直球黄色不辱骂吵架，谢绝皮套账号"}
+                        { "type":"Plain", "text":"不涉政不违法不搞直球黄色不辱骂吵架，谢绝皮套账号\n"},
+                        { "type":"Plain", "text":"自助开群：私聊管理员“bot”发送“开群”"}
                     ]}}
         return web.json_response(body)
     # elif json_obj['type'] == 'ReplyPush':
