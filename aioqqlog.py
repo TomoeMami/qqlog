@@ -133,32 +133,47 @@ async def post_handler(request):
      #    else:
      #        return web.Response()
         return web.Response()
-    elif json_obj['type'] == 'FriendMessage':
+    # elif json_obj['type'] == 'FriendMessage':
+    #     msgchain = json_obj['messageChain']
+    #     senderid = json_obj['sender']['id']
+    #     for i in msgchain:
+    #         if i['type'] == 'Plain':
+    #             if i['text'] == '你好':
+    #                 body = {
+    #                         'command': "sendFriendMessage",
+    #                         'content': {
+    #                             "sessionKey":"",
+    #                             "target":senderid,
+    #                             "messageChain":[
+    #                                 { "type":"Plain", "text":"hello\n" },
+    #                                 { "type":"Plain", "text":"world" }
+    #                             ]}}
+    #                 return web.json_response(data=body)
+                # if i['text'] == '开群':
+                #     body = {
+                #             'command': "unmuteAll",
+                #             'content': {
+                #                 "sessionKey":"",
+                #                 "target":614391357
+                #                 }}
+                #     with open ('./'+'开群记录.md','a',encoding='utf-8') as f:
+                #         f.write(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')+str(senderid)+'开群\n')
+                #     return web.json_response(data=body)
+    elif json_obj['type'] == 'TempMessage':
         msgchain = json_obj['messageChain']
         senderid = json_obj['sender']['id']
-        for i in msgchain:
-            if i['type'] == 'Plain':
-                if i['text'] == '你好':
-                    body = {
-                            'command': "sendFriendMessage",
-                            'content': {
-                                "sessionKey":"",
-                                "target":senderid,
-                                "messageChain":[
-                                    { "type":"Plain", "text":"hello\n" },
-                                    { "type":"Plain", "text":"world" }
-                                ]}}
-                    return web.json_response(data=body)
-                if i['text'] == '开群':
-                    body = {
-                            'command': "unmuteAll",
-                            'content': {
-                                "sessionKey":"",
-                                "target":614391357
-                                }}
-                    with open ('./'+'开群记录.md','a',encoding='utf-8') as f:
-                        f.write(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')+str(senderid)+'开群\n')
-                    return web.json_response(data=body)
+        if '开群' in str(msgchain):
+            body = {
+                'command': "unmuteAll",
+                'content': {
+                    "sessionKey":"",
+                    "target":614391357
+                }}
+            with open ('./'+'开群记录.md','a',encoding='utf-8') as f:
+                f.write(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')+str(senderid)+'开群\n')
+            return web.json_response(data=body)
+        else:
+            return web.Response()
     elif json_obj['type'] == 'BotInvitedJoinGroupRequestEvent':
         if json_obj['fromId'] == '1747222904':
             body = {
