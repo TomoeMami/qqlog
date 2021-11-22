@@ -211,7 +211,7 @@ async def post_handler(request):
                         { "type":"Plain", "text":"欢迎来到纯良群，请新人查看群公告\n" },
                         { "type":"Plain", "text":"本群所有消息均存档，务必谨言慎行。存档链接：https://hub.fastgit.org/TomoeMami/qqlog\n" },
                         { "type":"Plain", "text":"不涉政不违法不搞直球黄色不辱骂吵架，谢绝皮套账号\n"},
-                        { "type":"Plain", "text":"自助开群：私聊管理员“bot”发送“开群”"}
+                        { "type":"Plain", "text":"仅在有直播或S1炸了时开群。自助开群：私聊管理员“bot”发送“开群”"}
                     ]}}
         return web.json_response(body)
     # elif json_obj['type'] == 'ReplyPush':
