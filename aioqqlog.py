@@ -66,7 +66,7 @@ dailydict = []
 # pushmsg = []
 # global pushflag
 # pushflag = False
-
+allowlist = [794594593,1252281412,477620183,453281968,408571123,460929153,2877573155,2994013508,1119240857,148255229,3408592334,2387781077,1547952851,406129465,719831717,976058243,1035154062,3291489890,3023857629]
 routes = web.RouteTableDef()
 
 @routes.post('/')
@@ -144,7 +144,7 @@ async def post_handler(request):
                     "target":614391357
                 }}
             with open ('./'+'开群记录.md','a',encoding='utf-8') as f:
-                f.write(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')+str(senderid)+'开群\n')
+                f.write(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')+' '+str(senderid)+'开群\n\n')
             return web.json_response(data=body)
         elif '关群' in str(msgchain):
             body = {
@@ -159,7 +159,7 @@ async def post_handler(request):
     elif json_obj['type'] == 'TempMessage':
         msgchain = json_obj['messageChain']
         senderid = json_obj['sender']['id']
-        if '开群' in str(msgchain):
+        if(senderid in allowlist)and('开群' in str(msgchain)):
             body = {
                 'command': "unmuteAll",
                 'content': {
@@ -167,7 +167,7 @@ async def post_handler(request):
                     "target":614391357
                 }}
             with open ('./'+'开群记录.md','a',encoding='utf-8') as f:
-                f.write(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')+str(senderid)+'开群\n')
+                f.write(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')+' '+str(senderid)+'开群\n\n')
             return web.json_response(data=body)
         else:
             return web.Response()
