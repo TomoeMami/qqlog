@@ -137,27 +137,27 @@ async def post_handler(request):
      #    else:
      #        return web.Response()
         # return web.Response()
-    elif json_obj['type'] == 'FriendMessage':
-        msgchain = json_obj['messageChain']
-        senderid = json_obj['sender']['id']
-        if 'hi' in str(msgchain):
-            body = {
-                'command': "sendFriendMessage",
-                'content': {
-                    "sessionKey":"",
-                    "target":senderid,
-                    "messageChain":[{ "type":"Plain", "text":"hello" }]
-                },
-                'command': "sendFriendMessage",
-                'content': {
-                    "sessionKey":"",
-                    "target":senderid,
-                    "messageChain":[{ "type":"Plain", "text":"world" }]
-                }
-            }
-            with open ('./'+'开群记录.md','a',encoding='utf-8') as f:
-                f.write(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')+' '+str(senderid)+'开群\n\n')
-            return web.json_response(data=body)
+    # elif json_obj['type'] == 'FriendMessage':
+    #     msgchain = json_obj['messageChain']
+    #     senderid = json_obj['sender']['id']
+    #     if 'hi' in str(msgchain):
+    #         body = {
+    #             'command': "sendFriendMessage",
+    #             'content': {
+    #                 "sessionKey":"",
+    #                 "target":senderid,
+    #                 "messageChain":[{ "type":"Plain", "text":"hello" }]
+    #             },
+    #             'command': "sendFriendMessage",
+    #             'content': {
+    #                 "sessionKey":"",
+    #                 "target":senderid,
+    #                 "messageChain":[{ "type":"Plain", "text":"world" }]
+    #             }
+    #         }
+    #         with open ('./'+'开群记录.md','a',encoding='utf-8') as f:
+    #             f.write(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')+' '+str(senderid)+'开群\n\n')
+    #         return web.json_response(data=body)
     #     elif '关群' in str(msgchain):
     #         body = {
     #             'command': "muteAll",
