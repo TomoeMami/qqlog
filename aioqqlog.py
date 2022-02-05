@@ -73,7 +73,7 @@ routes = web.RouteTableDef()
 async def post_handler(request):
     json_obj = await request.json()
     if json_obj['type'] == 'GroupMessage':
-        if json_obj['sender']['group'] == 614391357:
+        if json_obj['sender']['group']['id'] == 614391357:
             msgchain = json_obj['messageChain']
             sendername = json_obj['sender']['memberName']
             char = '#### '
@@ -166,7 +166,7 @@ async def post_handler(request):
     #     else:
     #         return web.Response()
     elif json_obj['type'] == 'TempMessage':
-        if json_obj['sender']['group'] == 872318036:
+        if json_obj['sender']['group']['id'] == 872318036:
             msgchain = json_obj['messageChain']
             senderid = json_obj['sender']['id']
             qqurl = 'http://127.0.0.1:7890/sendGroupMessage'
