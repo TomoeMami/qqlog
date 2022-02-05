@@ -68,9 +68,6 @@ dailydict = []
 # pushflag = False
 allowlist = [794594593,1252281412,477620183,453281968,408571123,460929153,2877573155,2994013508,1119240857,148255229,3408592334,2387781077,1547952851,406129465,719831717,976058243,1035154062,3291489890,3023857629,2635563775,824445842]
 routes = web.RouteTableDef()
-global cached_sender
-
-cached_sender = []
 
 @routes.post('/')
 async def post_handler(request):
@@ -168,21 +165,29 @@ async def post_handler(request):
     #         return web.json_response(data=body)
     #     else:
     #         return web.Response()
-    # elif json_obj['type'] == 'TempMessage':
-        # if json_obj['sender']['group'] == 872318036:
-        #     msgchain = json_obj['messageChain']
-        #     senderid = json_obj['sender']['id']
-        #     body = {
-        #         'command': "unmuteAll",
-        #         'content': {
-        #             "sessionKey":"",
-        #             "target":614391357
-        #         }}
-        #         with open ('./'+'开群记录.md','a',encoding='utf-8') as f:
-        #             f.write(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')+' '+str(senderid)+'开群\n\n')
-        #         return web.json_response(data=body)
-        #     else:
-        #         return web.Response()
+    elif json_obj['type'] == 'TempMessage':
+        if json_obj['sender']['group'] == 872318036:
+            msgchain = json_obj['messageChain']
+            senderid = json_obj['sender']['id']
+            qqurl = 'http://127.0.0.1:7890/sendGroupMessage'
+            qqdata = {
+                "sessionKey":"",
+                "target":872318036,
+                "messageChain":msgchain
+            }
+            async with aiohttp.request("POST",qqurl,json=qqdata) as r:
+                resp = await r.text()
+            msgchain = msgchain.insert(0,{"type":"Plain", "text":str(senderid)+":\n"})
+            body = {
+                'command': "sendFriendMessage",
+                'content': {
+                    "sessionKey":"",
+                    "target":1747222904,
+                    "messageChain":msgchain
+                }}
+            return web.json_response(data=body)
+        else:
+            return web.Response()
     elif json_obj['type'] == 'BotInvitedJoinGroupRequestEvent':
         if json_obj['fromId'] == '1747222904':
             body = {
