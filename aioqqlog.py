@@ -177,14 +177,15 @@ async def post_handler(request):
             }
             async with aiohttp.request("POST",qqurl,json=qqdata) as r:
                 resp = await r.text()
-            msgchain = msgchain.insert(0,{"type":"Plain", "text":str(senderid)+":\n"})
+            qqmsg = msgchain.insert(0,{"type":"Plain", "text":str(senderid)+":\n"})
             body = {
                 'command': "sendFriendMessage",
                 'content': {
                     "sessionKey":"",
                     "target":1747222904,
-                    "messageChain":msgchain
+                    "messageChain":qqmsg
                 }}
+            print(qqmsg)
             return web.json_response(data=body)
         else:
             return web.Response()
