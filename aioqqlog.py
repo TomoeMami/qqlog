@@ -30,11 +30,11 @@ async def video_detail(url):
         async with aiohttp.request('GET', url, timeout=aiohttp.client.ClientTimeout(10)) as resp:
             res = await resp.json()
             res = res['data']
-        vurl = f"https://www.bilibili.com/video/av{res['aid']}\n"
-        title = f"标题：{res['title']}\n"
-        up = f"UP主：{res['owner']['name']} \n"
-        pic_url = res['pic']
-        msg = str(title)+str(vurl)+str(up)
+            vurl = f"https://www.bilibili.com/video/av{res['aid']}\n"
+            title = f"标题：{res['title']}\n"
+            up = f"UP主：{res['owner']['name']} \n"
+            pic_url = res['pic']
+            msg = str(title)+str(vurl)+str(up)
         return msg, pic_url
     except Exception as e:
         msg = "视频解析出错--Error: {}".format(type(e))
@@ -101,9 +101,9 @@ async def post_handler(request):
                 url = dat['meta']['detail_1']['qqdocurl']
                 title = dat['meta']['detail_1']['desc']
                 char = char + ' ['+title+']'+'('+url+')'
-        char = char + '\n\n*****\n\n'
-        char = re.sub(r'\((\d{1})\d+(\d{1})\)','(\1****\2)',char)
-        dailydict.append(char)
+                char = char + '\n\n*****\n\n'
+                char = re.sub(r'\((\d{1})\d+(\d{1})\)','(\1****\2)',char)
+                dailydict.append(char)
         if len(dailydict) >= 10:
             toyear = datetime.datetime.now().strftime('%Y')
             tomonth = datetime.datetime.now().strftime('%Y-%m')
@@ -112,120 +112,62 @@ async def post_handler(request):
             mkdir('./'+toyear+'/'+tomonth)
             with open ('./'+toyear+'/'+tomonth+'/'+today+'.md','a',encoding='utf-8') as f:
                 f.writelines(dailydict)
-            dailydict.clear()
-        print(char)
-        # biliurl = await extract(str(msgchain))
-      #  b23_url = await b23_extract(str(msgchain))
-     #    if "粒Q" in str(msgchain) :
-     #  #      biliurl = await extract(str(b23_url))
-     #    msg_text,msg_pic_url = await video_detail(biliurl)
-     #    body = {
-     #        'command': "sendGroupMessage",
-     #        'content': {
-     #            "sessionKey":"",
-     #            "target":614391357,
-     #            "messageChain":[
-     #                { "type":"Plain", "text":msg_text },
-     #                { "type":"Image", "url":msg_pic_url }
-     #            ]}}
-     #    print(body)
-     #    return web.json_response(body)
-     #    else:
-     #        return web.Response()
-        # return web.Response()
-    elif json_obj['type'] == 'FriendMessage':
-        msgchain = json_obj['messageChain']
-        senderid = json_obj['sender']['id']
-        if '开群' in str(msgchain):
-            body = {
-                'command': "unmuteAll",
-                'content': {
-                    "sessionKey":"",
-                    "target":614391357
-                }}
-            with open ('./'+'开群记录.md','a',encoding='utf-8') as f:
-                f.write(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')+' '+str(senderid)+'开群\n\n')
-            return web.json_response(data=body)
-        elif '关群' in str(msgchain):
-            body = {
-                'command': "muteAll",
-                'content': {
-                    "sessionKey":"",
-                    "target":614391357
-                }}
-            return web.json_response(data=body)
-        else:
-            return web.Response()
-    elif json_obj['type'] == 'TempMessage':
-        msgchain = json_obj['messageChain']
-        senderid = json_obj['sender']['id']
-        if(senderid in allowlist)and('开群' in str(msgchain)):
-            body = {
-                'command': "unmuteAll",
-                'content': {
-                    "sessionKey":"",
-                    "target":614391357
-                }}
-            with open ('./'+'开群记录.md','a',encoding='utf-8') as f:
-                f.write(datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')+' '+str(senderid)+'开群\n\n')
-            return web.json_response(data=body)
-        else:
-            return web.Response()
+                dailydict.clear()
+                print(char)
     elif json_obj['type'] == 'BotInvitedJoinGroupRequestEvent':
         if json_obj['fromId'] == '1747222904':
             body = {
-                    'command': "resp_botInvitedJoinGroupRequestEvent",
-                    'content': {
-                        "sessionKey":"",
-                        "eventId":json_obj['eventId'],
-                        "fromId":json_obj['fromId'],
-                        "groupId":json_obj['groupId'],
-                        "operate":0,
-                        "message":""
-                        }}
+                'command': "resp_botInvitedJoinGroupRequestEvent",
+                'content': {
+                    "sessionKey":"",
+                    "eventId":json_obj['eventId'],
+                    "fromId":json_obj['fromId'],
+                    "groupId":json_obj['groupId'],
+                    "operate":0,
+                    "message":""
+                }}
             return web.json_response(body)
     elif json_obj['type'] == 'MemberJoinRequestEvent':
         #{'type': 'MemberJoinRequestEvent', 'eventId': 1633094289803757, 'message': '问题：请输入asoul\n答案：asoul', 'fromId': 1465887523, 'groupId': 614391357, 'groupName': 'S1 A综QQ群纯良分宗', 'nick': '向晚大魔王'}
-        blacklist = (2508649368)
+        # blacklist = (2508649368)
         #这里直接填数字
         if '答案：asoul' in json_obj['message']:
-            if json_obj['fromId'] not in blacklist:
-                body = {
-                        'command': "resp_memberJoinRequestEvent",
-                        'content': {
-                            "sessionKey":"",
-                            "eventId":json_obj['eventId'],
-                            "fromId":json_obj['fromId'],
-                            "groupId":json_obj['groupId'],
-                            "operate":0,
-                            "message":""
-                            }}
-                return web.json_response(body)
+            body = {
+                'command': "resp_memberJoinRequestEvent",
+                'content': {
+                    "sessionKey":"",
+                    "eventId":json_obj['eventId'],
+                    "fromId":json_obj['fromId'],
+                    "groupId":json_obj['groupId'],
+                    "operate":0,
+                    "message":""
+                }}
+            return web.json_response(body)
         else:
             body = {
-                    'command': "resp_memberJoinRequestEvent",
-                    'content': {
-                        "sessionKey":"",
-                        "eventId":json_obj['eventId'],
-                        "fromId":json_obj['fromId'],
-                        "groupId":json_obj['groupId'],
-                        "operate":1,
-                        "message":""
-                        }}
+                'command': "resp_memberJoinRequestEvent",
+                'content': {
+                    "sessionKey":"",
+                    "eventId":json_obj['eventId'],
+                    "fromId":json_obj['fromId'],
+                    "groupId":json_obj['groupId'],
+                    "operate":1,
+                    "message":""
+                }}
             return web.json_response(body)
     elif json_obj['type'] == 'MemberJoinEvent':
         body = {
-                'command': "sendGroupMessage",
-                'content': {
-                    "sessionKey":"",
-                    "target":614391357,
-                    "messageChain":[
-                        { "type":"Plain", "text":"欢迎来到S1A-soul楼纯良公开群\n\n" },
-                        { "type":"Plain", "text":"本群立足于S1A-soul楼\n\n" },
-                        { "type":"Plain", "text":"讨论内容纯良，不涉政不违法不盒不搞直球黄色不辱骂吵架，谢绝皮套账号\n\n"},
-                        { "type":"Plain", "text":"聊天内容公开，进出群随意，群聊消息均存档，请谨言慎行。\n\n"},
-                        { "type":"Plain", "text":"存档链接：https://hub.fastgit.org/TomoeMami/qqlog"}
-                    ]}}
+            'command': "sendGroupMessage",
+            'content': {
+                "sessionKey":"",
+                "target":614391357,
+                "messageChain":[
+                    { "type":"Plain", "text":"欢迎来到S1A-soul楼纯良公开群\n\n" },
+                    { "type":"Plain", "text":"本群立足于S1A-soul楼\n\n" },
+                    { "type":"Plain", "text":"讨论内容纯良，不涉政不违法不盒不搞直球黄色不辱骂吵架，谢绝皮套账号\n\n"},
+                    { "type":"Plain", "text":"聊天内容公开，进出群随意，群聊消息均存档，请谨言慎行。\n\n"},
+                    { "type":"Plain", "text":"存档链接：https://hub.fastgit.org/TomoeMami/qqlog"}
+                ]}}
         return web.json_response(body)
     # elif json_obj['type'] == 'ReplyPush':
     #     pushflag = True
