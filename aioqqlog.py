@@ -66,7 +66,6 @@ dailydict = []
 # pushmsg = []
 # global pushflag
 # pushflag = False
-allowlist = [794594593,1252281412,477620183,453281968,408571123,460929153,2877573155,2994013508,1119240857,148255229,3408592334,2387781077,1547952851,406129465,719831717,976058243,1035154062,3291489890,3023857629,2635563775,824445842]
 routes = web.RouteTableDef()
 
 @routes.post('/')
@@ -77,6 +76,7 @@ async def post_handler(request):
         sendername = json_obj['sender']['memberName']
         char = '#### '
         replymark = 0
+        print(msgchain)
         for i in msgchain:
             if i['type'] == 'Source':
                 gettime = time.strftime("%H:%M:%S ", time.localtime(i['time']))
