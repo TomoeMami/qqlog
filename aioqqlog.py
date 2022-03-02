@@ -76,7 +76,7 @@ async def post_handler(request):
         sendername = json_obj['sender']['memberName']
         char = '#### '
         replymark = 0
-        print(msgchain)
+#        print(msgchain)
         for i in msgchain:
             if i['type'] == 'Source':
                 gettime = time.strftime("%H:%M:%S ", time.localtime(i['time']))
@@ -113,7 +113,7 @@ async def post_handler(request):
             with open ('./'+toyear+'/'+tomonth+'/'+today+'.md','a',encoding='utf-8') as f:
                 f.writelines(dailydict)
                 dailydict.clear()
-                print(char)
+        print(char)
     elif json_obj['type'] == 'BotInvitedJoinGroupRequestEvent':
         if json_obj['fromId'] == '1747222904':
             body = {
