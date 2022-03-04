@@ -76,7 +76,6 @@ async def post_handler(request):
         sendername = json_obj['sender']['memberName']
         char = '#### '
         replymark = 0
-#        print(msgchain)
         for i in msgchain:
             if i['type'] == 'Source':
                 gettime = time.strftime("%H:%M:%S ", time.localtime(i['time']))
@@ -101,9 +100,9 @@ async def post_handler(request):
                 url = dat['meta']['detail_1']['qqdocurl']
                 title = dat['meta']['detail_1']['desc']
                 char = char + ' ['+title+']'+'('+url+')'
-                char = char + '\n\n*****\n\n'
-                char = re.sub(r'\((\d{1})\d+(\d{1})\)','(\1****\2)',char)
-                dailydict.append(char)
+        char = char + '\n\n*****\n\n'
+        char = re.sub(r'\((\d{1})\d+(\d{1})\)','(\1****\2)',char)
+        dailydict.append(char)
         if len(dailydict) >= 10:
             toyear = datetime.datetime.now().strftime('%Y')
             tomonth = datetime.datetime.now().strftime('%Y-%m')
@@ -112,7 +111,7 @@ async def post_handler(request):
             mkdir('./'+toyear+'/'+tomonth)
             with open ('./'+toyear+'/'+tomonth+'/'+today+'.md','a',encoding='utf-8') as f:
                 f.writelines(dailydict)
-                dailydict.clear()
+            dailydict.clear()
         print(char)
     elif json_obj['type'] == 'BotInvitedJoinGroupRequestEvent':
         if json_obj['fromId'] == '1747222904':
