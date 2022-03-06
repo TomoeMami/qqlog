@@ -165,7 +165,7 @@ async def post_handler(request):
                     { "type":"Plain", "text":"本群立足于S1A-soul楼\n\n" },
                     { "type":"Plain", "text":"讨论内容纯良，不涉政不违法不盒不搞直球黄色不辱骂吵架，谢绝皮套账号\n\n"},
                     { "type":"Plain", "text":"聊天内容公开，进出群随意，群聊消息均存档，请谨言慎行。\n\n"},
-                    { "type":"Plain", "text":"存档链接：https://hub.fastgit.org/TomoeMami/qqlog"}
+                    { "type":"Plain", "text":"存档链接：https://hub.fastgit.xyz/TomoeMami/qqlog"}
                 ]}}
         return web.json_response(body)
     # elif json_obj['type'] == 'ReplyPush':
