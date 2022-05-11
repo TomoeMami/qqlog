@@ -159,7 +159,7 @@ async def post_handler(request):
             'command': "sendGroupMessage",
             'content': {
                 "sessionKey":"",
-                "target":614391357,
+                "target":128740624,
                 "messageChain":[
                     { "type":"Plain", "text":"欢迎来到S1A-soul楼纯良公开群\n\n" },
                     { "type":"Plain", "text":"本群立足于S1A-soul楼\n\n" },
