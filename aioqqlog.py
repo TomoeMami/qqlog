@@ -78,7 +78,6 @@ async def post_handler(request):
         at_flag = 0
         mark_flag = 0
         at_id = 0
-        at_name = ''
         group_id = json_obj['sender']['group']['id']
         for i in msgchain:
             if i['type'] == 'Source':
@@ -99,8 +98,6 @@ async def post_handler(request):
                 char = char + '(@了某人) '
                 at_flag = 1
                 at_id = i['target']
-                at_name = i['display']
-                print(i)
             elif i['type'] == 'Xml':
                 url = re.findall(r'url=\"(.+?)\"',i['xml'])[0]
                 title = re.findall(r'\<title\>(.+?)\</title\>',i['xml'])[0]
@@ -138,7 +135,7 @@ async def post_handler(request):
                "sessionKey":"",
                "target":group_id,
                "messageChain":[
-                   { "type":"Plain", "text":"-> "+at_name + " 已被标记" + str(block_list[str(at_id)]) +"次" }
+                   { "type":"Plain", "text":"-> 该用户已被标记" + str(block_list[str(at_id)]) +"次" }
                ]}}
             return web.json_response(body)
         else:
