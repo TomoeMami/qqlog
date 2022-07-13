@@ -94,7 +94,7 @@ async def post_handler(request):
             elif i['type'] == 'Face':
                 char = char + '[' + i['name'] + ']'
             elif i['type'] == 'At':
-                char = char + '(@'+str(i['target'])[:2]+'****'+str(i['target'])[-2:]+') '
+                char = chat + '(@'+str(i['target'])[:2]+'****'+str(i['target'])[-2:]+') '
                 char = char + '(@了某人) '
                 at_flag = 1
                 at_id = i['target']
@@ -131,13 +131,16 @@ async def post_handler(request):
                 f.write(json.dumps(block_list,indent=2,ensure_ascii=False))
             with open ('./recall.json','r',encoding='utf-8') as f:
                 recall_list = json.load(f)
+            temp_reply = "-> 该用户已被标记" + str(block_list[str(at_id)]) +"次" 
+            if str(at_id) in recall_list.keys():
+                temp_reply = temp_reply + "，被撤回发言" + str(recall_list[str(at_id)])+ "次"
             body = {
            'command': "sendGroupMessage",
            'content': {
                "sessionKey":"",
                "target":group_id,
                "messageChain":[
-                   { "type":"Plain", "text":"-> 该用户已被标记" + str(block_list[str(at_id)]) +"次，被撤回发言" + str(recall_list[str(at_id)])+ "次" }
+                   { "type":"Plain", "text":temp_reply}
                ]}}
             return web.json_response(body)
         else:
