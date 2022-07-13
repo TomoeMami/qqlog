@@ -88,7 +88,7 @@ async def post_handler(request):
                 char = char + '<blockquote>'+ i['origin'][0]['text'] +'</blockquote>\n '
             elif i['type'] == 'Plain':
                 char = char + i['text']
-                if '标记' in i['text']：
+                if '标记' in i['text']:
                     mark_flag = 1
             elif i['type'] == 'Image':
                 char = char + '![]('+i['url']+'")'
@@ -99,7 +99,8 @@ async def post_handler(request):
                 char = char + '(@了某人) '
                 at_flag = 1
                 at_id = i['target']
-                at_name = i['display'][1:]
+                at_name = i['display']
+                print(i)
             elif i['type'] == 'Xml':
                 url = re.findall(r'url=\"(.+?)\"',i['xml'])[0]
                 title = re.findall(r'\<title\>(.+?)\</title\>',i['xml'])[0]
@@ -126,9 +127,9 @@ async def post_handler(request):
             with open ('./block.json','r',encoding='utf-8') as f:
                 block_list = json.load(f)
             if str(at_id) in block_list.keys():
-                block_list[str(at_id)]['标记'] = block_list[str(at_id)]['标记'] + 1
+                block_list[str(at_id)] = block_list[str(at_id)] + 1
             else:
-                block_list[str(at_id)]['标记'] = 1
+                block_list[str(at_id)] = 1
             with open ('./block.json','w',encoding='utf-8') as f:
                 f.write(json.dumps(block_list,indent=2,ensure_ascii=False))
             body = {
@@ -137,7 +138,7 @@ async def post_handler(request):
                "sessionKey":"",
                "target":group_id,
                "messageChain":[
-                   { "type":"Plain", "text":"-> "+at_name + " 已被标记" + block_list[str(at_id)]['标记'] +"次" }
+                   { "type":"Plain", "text":"-> "+at_name + " 已被标记" + str(block_list[str(at_id)]) +"次" }
                ]}}
             return web.json_response(body)
         else:
