@@ -216,7 +216,7 @@ async def post_handler(request):
             "sessionKey":"",
             "target":group_id,
             "messageChain":[
-                { "type":"Plain", "text":"-> 该用户发言已被撤回" + str(block_list[str(at_id)]) +"次" }
+                { "type":"Plain", "text":"-> 该用户发言已被撤回" + str(block_list[str(author_id)]) +"次" }
             ]}}
         return web.json_response(body)
     else:
