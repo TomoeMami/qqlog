@@ -129,7 +129,7 @@ async def post_handler(request):
                 block_list[str(at_id)] = 1
             with open ('./block.json','w',encoding='utf-8') as f:
                 f.write(json.dumps(block_list,indent=2,ensure_ascii=False))
-            with open ('./recall.json','a',encoding='utf-8') as f:
+            with open ('./recall.json','r',encoding='utf-8') as f:
                 recall_list = json.load(f)
             body = {
            'command': "sendGroupMessage",
