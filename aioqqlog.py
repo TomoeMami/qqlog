@@ -200,25 +200,28 @@ async def post_handler(request):
     #     pushmsg = json_obj['msg']
     #     return web.Response()
     elif json_obj['type'] == 'GroupRecallEvent':
-        with open ('./block.json','r',encoding='utf-8') as f:
-                block_list = json.load(f)
-        author_id = json_obj['authorId']
-        group_id = json_obj['group']['id']
-        if str(author_id) in block_list.keys():
-            block_list[str(author_id)] = block_list[str(author_id)] + 1
+        if json_obj['operator']['id'] == 1747222904:
+            with open ('./block.json','r',encoding='utf-8') as f:
+                    block_list = json.load(f)
+            author_id = json_obj['authorId']
+            group_id = json_obj['group']['id']
+            if str(author_id) in block_list.keys():
+                block_list[str(author_id)] = block_list[str(author_id)] + 1
+            else:
+                block_list[str(author_id)] = 1
+            with open ('./block.json','w',encoding='utf-8') as f:
+                f.write(json.dumps(block_list,indent=2,ensure_ascii=False))
+            body = {
+            'command': "sendGroupMessage",
+            'content': {
+                "sessionKey":"",
+                "target":group_id,
+                "messageChain":[
+                    { "type":"Plain", "text":"-> 该用户发言已被管理员撤回" + str(block_list[str(author_id)]) +"次" }
+                ]}}
+            return web.json_response(body)
         else:
-            block_list[str(author_id)] = 1
-        with open ('./block.json','w',encoding='utf-8') as f:
-            f.write(json.dumps(block_list,indent=2,ensure_ascii=False))
-        body = {
-        'command': "sendGroupMessage",
-        'content': {
-            "sessionKey":"",
-            "target":group_id,
-            "messageChain":[
-                { "type":"Plain", "text":"-> 该用户发言已被撤回" + str(block_list[str(author_id)]) +"次" }
-            ]}}
-        return web.json_response(body)
+            return web.Response()
     else:
         return web.Response()
 
@@ -226,3 +229,4 @@ app = web.Application()
 app.add_routes(routes)
 
 web.run_app(app, host='0.0.0.0', port=1314)
+
