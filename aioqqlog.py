@@ -129,13 +129,15 @@ async def post_handler(request):
                 block_list[str(at_id)] = 1
             with open ('./block.json','w',encoding='utf-8') as f:
                 f.write(json.dumps(block_list,indent=2,ensure_ascii=False))
+            with open ('./recall.json','a',encoding='utf-8') as f:
+                recall_list = json.load(f)
             body = {
            'command': "sendGroupMessage",
            'content': {
                "sessionKey":"",
                "target":group_id,
                "messageChain":[
-                   { "type":"Plain", "text":"-> 该用户已被标记" + str(block_list[str(at_id)]) +"次" }
+                   { "type":"Plain", "text":"-> 该用户已被标记" + str(block_list[str(at_id)]) +"次，被撤回发言" + str(recall_list[str(at_id)])+ "次" }
                ]}}
             return web.json_response(body)
         else:
@@ -211,17 +213,17 @@ async def post_handler(request):
                 block_list[str(author_id)] = 1
             with open ('./recall.json','w',encoding='utf-8') as f:
                 f.write(json.dumps(block_list,indent=2,ensure_ascii=False))
-            body = {
-            'command': "sendGroupMessage",
-            'content': {
-                "sessionKey":"",
-                "target":group_id,
-                "messageChain":[
-                    { "type":"Plain", "text":"-> 该用户发言已被管理撤回" + str(block_list[str(author_id)]) +"次" }
-                ]}}
-            return web.json_response(body)
-        else:
-            return web.Response()
+        #     body = {
+        #     'command': "sendGroupMessage",
+        #     'content': {
+        #         "sessionKey":"",
+        #         "target":group_id,
+        #         "messageChain":[
+        #             { "type":"Plain", "text":"-> 该用户发言已被管理撤回" + str(block_list[str(author_id)]) +"次" }
+        #         ]}}
+        #     return web.json_response(body)
+        # else:
+        return web.Response()
     else:
         return web.Response()
 
@@ -229,4 +231,5 @@ app = web.Application()
 app.add_routes(routes)
 
 web.run_app(app, host='0.0.0.0', port=1314)
+
 
