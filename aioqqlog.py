@@ -75,7 +75,11 @@ async def post_handler(request):
         msgchain = json_obj['messageChain']
         sendername = json_obj['sender']['memberName']
         char = '#### '
-        replymark = 0
+        at_flag = 0
+        mark_flag = 0
+        at_id = 0
+        at_name = ''
+        group_id = json_obj['sender']['group']['id']
         for i in msgchain:
             if i['type'] == 'Source':
                 gettime = time.strftime("%H:%M:%S ", time.localtime(i['time']))
@@ -84,6 +88,8 @@ async def post_handler(request):
                 char = char + '<blockquote>'+ i['origin'][0]['text'] +'</blockquote>\n '
             elif i['type'] == 'Plain':
                 char = char + i['text']
+                if '标记' in i['text']：
+                    mark_flag = 1
             elif i['type'] == 'Image':
                 char = char + '![]('+i['url']+'")'
             elif i['type'] == 'Face':
@@ -91,6 +97,9 @@ async def post_handler(request):
             elif i['type'] == 'At':
                 # char = chat + '(@'+str(i['target'])[:2]+'****'+str(i['target'])[-2:]+') '
                 char = char + '(@了某人) '
+                at_flag = 1
+                at_id = i['target']
+                at_name = i['display'][1:]
             elif i['type'] == 'Xml':
                 url = re.findall(r'url=\"(.+?)\"',i['xml'])[0]
                 title = re.findall(r'\<title\>(.+?)\</title\>',i['xml'])[0]
@@ -113,6 +122,26 @@ async def post_handler(request):
                 f.writelines(dailydict)
             dailydict.clear()
         print(char)
+        if json_obj['sender']['id'] == 1747222904 and at_flag == 1 and mark_flag == 1:
+            with open ('./block.json','r',encoding='utf-8') as f:
+                block_list = json.load(f)
+            if str(at_id) in block_list.keys():
+                block_list[str(at_id)]['标记'] = block_list[str(at_id)]['标记'] + 1
+            else:
+                block_list[str(at_id)]['标记'] = 1
+            with open ('./block.json','w',encoding='utf-8') as f:
+                f.write(json.dumps(block_list,indent=2,ensure_ascii=False))
+            body = {
+           'command': "sendGroupMessage",
+           'content': {
+               "sessionKey":"",
+               "target":group_id,
+               "messageChain":[
+                   { "type":"Plain", "text":"-> "+at_name + " 已被标记" + block_list[str(at_id)]['标记'] +"次" }
+               ]}}
+            return web.json_response(body)
+        else:
+            return web.Response()
     elif json_obj['type'] == 'BotInvitedJoinGroupRequestEvent':
         if json_obj['fromId'] == '1747222904':
             body = {
@@ -179,3 +208,4 @@ app = web.Application()
 app.add_routes(routes)
 
 web.run_app(app, host='0.0.0.0', port=1314)
+
