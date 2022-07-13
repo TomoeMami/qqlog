@@ -94,7 +94,7 @@ async def post_handler(request):
             elif i['type'] == 'Face':
                 char = char + '[' + i['name'] + ']'
             elif i['type'] == 'At':
-                char = chat + '(@'+str(i['target'])[:2]+'****'+str(i['target'])[-2:]+') '
+                #char = chat + '(@'+str(i['target'])[:2]+'****'+str(i['target'])[-2:]+') '
                 char = char + '(@了某人) '
                 at_flag = 1
                 at_id = i['target']
